@@ -78,7 +78,7 @@ ui <- dashboardPage(
           ),
           )
         )),
-        actionButton('jump_to_b', 'Continue to the Effects Of Interest Tab'),
+        actionButton('jump_to_b', 'Continue to the Effects of Interest Tab'),
       ),
       # Effect sizes of interest
       tabItem(
@@ -311,7 +311,7 @@ Output:	Noncentrality parameter δ	=	3.8710464
 "
             ))
         )),
-        actionButton('jump_to_d', 'Continueq to the Informational Value Tab'),
+        actionButton('jump_to_d', 'Continue to the Informational Value Tab'),
         
       ),
       #  Informational Value
@@ -327,7 +327,7 @@ Output:	Noncentrality parameter δ	=	3.8710464
         box(
           collapsible = FALSE, title = "Additional details about the sample size", solidHeader = TRUE, status = "primary", width = 12, 
           h4("Describe the distribution of participants or observations across conditions, how you plan to deal with missing data, or any other information that determines the information this data can provide in relation to the inferential goal."),
-          textAreaInput("observations", NULL, rows = 5)),
+          textAreaInput("participants_details", NULL, rows = 5)),
       HTML("<h4><b>Given the following resource constraints:</b></h4>"),
         textOutput("final_summary_text_1", container = tags$h4),
         HTML("<h4><b>Given the following effects of interest:</b></h4>"),
@@ -335,7 +335,7 @@ Output:	Noncentrality parameter δ	=	3.8710464
         textOutput("final_summary_text_3", container = tags$h4),
         textOutput("final_summary_text_4", container = tags$h4),
         HTML("<h4><b>Given the following inferential goal:</b></h4>"),
-        textOutput("final_summary_text_5", container = tags$em),
+        textOutput("final_summary_text_5", container = tags$h4),
       HTML("<h4><b>Please explain what the the informational value of the sample size that will be collected is, given any resource constraints, the effects of interest, and the inferential goal.</b></h4>"),
         box(
           collapsible = FALSE, title = "Informational Value of the Study", solidHeader = TRUE, status = "primary", width = 12, 
@@ -405,6 +405,9 @@ server <- function(input, output, session) {
   observeEvent(input$power_goal, {values$power_goal <- input$power_goal})
   observeEvent(input$power_type, {values$power_type <- input$power_type})
   observeEvent(input$power_analysis_code, {values$power_analysis_code <- input$power_analysis_code})
+  observeEvent(input$participants, {values$participants <- input$participants})
+  observeEvent(input$observations, {values$observations <- input$observations})
+  observeEvent(input$participants_details, {values$participants_details <- input$participants_details})
   observeEvent(input$informational_value, {values$informational_value <- input$informational_value})
   
   observeEvent(input$collect_entire_population, {
@@ -480,11 +483,11 @@ server <- function(input, output, session) {
   })
   
   final_summary_text_1 <- reactive(input$describe_constraints)
-  final_summary_text_2 <- reactive(if(is.na(input$sesoi_effect_value) == FALSE){paste0("Given a smallest effect size of interest size of ", input$sesoi_effect_metric, " = ", input$sesoi_effect_value,".")})
-    final_summary_text_3 <- reactive(if(is.na(input$statistically_detectable_effect_value) == FALSE){paste0("Given a minimal statistically detectable effect of ", input$statistically_detectable_effect_metric, " = ", input$statistically_detectable_effect_value, ".")})
-    final_summary_text_3 <- reactive(if(input$expected_effect_from_meta == "yes") {paste0("Given an expected effect size of ", input$expected_effect_metric_meta, " = ", input$expected_effect_value_meta,"")
+  final_summary_text_2 <- reactive(if(is.na(input$sesoi_effect_value) == FALSE){paste0("A smallest effect size of interest size of ", input$sesoi_effect_metric, " = ", input$sesoi_effect_value,".")})
+    final_summary_text_3 <- reactive(if(is.na(input$statistically_detectable_effect_value) == FALSE){paste0("A minimal statistically detectable effect of ", input$statistically_detectable_effect_metric, " = ", input$statistically_detectable_effect_value, ".")})
+    final_summary_text_3 <- reactive(if(input$expected_effect_from_meta == "yes") {paste0("An expected effect size of ", input$expected_effect_metric_meta, " = ", input$expected_effect_value_meta,"")
     })
-    final_summary_text_4 <- reactive(if(input$expected_effect_from_study == "yes") {paste0("Given an expected effect size of ", input$expected_effect_metric_study, " = ", input$expected_effect_value_study,"")
+    final_summary_text_4 <- reactive(if(input$expected_effect_from_study == "yes") {paste0("An expected effect size of ", input$expected_effect_metric_study, " = ", input$expected_effect_value_study,"")
     })
     
     power_desired <- reactive(
@@ -504,10 +507,10 @@ server <- function(input, output, session) {
       inferential_goal_final_summary <- paste0("The inferential goal is based on a ", input$power_type, " with an alpha level of ", input$alpha_level, power_desired())
     } else if (
       input$estimate == "yes") {
-      inferential_goal_final_summary <- paste0("The **inferentional goal** is to estimate parameters with a desired **accuracy** ", input$desired_accuracy, " ", input$estimate_metric, ".")
+      inferential_goal_final_summary <- paste0("The inferentional goal is to estimate parameters with a desired accuracy ", input$desired_accuracy, " ", input$estimate_metric, ".")
     } else if (
       input$decision == "yes") {
-      inferential_goal_final_summary <- paste0("The **inferentional goal** is to make a **decision** based on the judgment that a Type I error is ", input$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", input$alpha_level, ", and the desired power is ", input$power)
+      inferential_goal_final_summary <- paste0("The inferentional goal is to make a decision based on the judgment that a Type I error is ", input$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", input$alpha_level, ", and the desired power is ", input$power)
     })
     
     
@@ -573,6 +576,9 @@ server <- function(input, output, session) {
                      power_goal = values$power_goal,
                      power_type = as.character(values$power_type),
                      power_analysis_code = values$power_analysis_code,
+                     observations = values$observations,
+                     participants = values$participants,
+                     participants_details = values$participants_details,
                      informational_value = values$informational_value)
   
       

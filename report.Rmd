@@ -46,6 +46,9 @@ params:
   power_goal: NA,
   power_type: NA,
   power_analysis_code: NA,
+  observations: NA,
+  participants: NA,
+  participants_details: NA,
   informational_value: NA,
   
 ---
@@ -225,14 +228,13 @@ cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary))
 
 # D: Informational Value of the Study
 
-Based on the resource constraints, the effects of interest, and the inferential goals, the following evaluation of the **informational value** of the study has been provided:
+Based on the resource constraints, the effects of interest, and the inferential goals, the following evaluation of the informational value of the study has been provided:
 
 Given the following resource constraints: 
 
 ```{r, echo = FALSE, comment = NA}
 cat(gsub(pattern = "\n", replacement = "  \n", x = as.character(params$description_constraints)))
 ```
-
 
 ```{r echo = FALSE}
 # Final summary
@@ -244,30 +246,36 @@ if(params$expected_effect_from_meta == "yes") {
     }
 ``` 
 
-Given `r if(is.na(params$sesoi_effect_value) == FALSE){paste0("a smallest effect size of interest size of ", params$sesoi_effect_metric, " = ", params$sesoi_effect_value,",")}` `r if(is.na(params$statistically_detectable_effect_value) == FALSE){paste0("a minimal statistically detectable effect of ", params$statistically_detectable_effect_metric, " = ", params$statistically_detectable_effect_value,",")}` `r if(params$expected_effect_from_meta == "yes"){paste(expected_effect_final_summary)}` `r if(params$expected_effect_from_study == "yes"){paste(expected_effect_final_summary)}` `r if(params$distribution_effect != ""){paste("and a distribution of effect sizes in the literature as described below:")}`
-
+and given `r if(is.na(params$sesoi_effect_value) == FALSE){paste0("a smallest effect size of interest size of ", params$sesoi_effect_metric, " = ", params$sesoi_effect_value,",")}` `r if(is.na(params$statistically_detectable_effect_value) == FALSE){paste0("a minimal statistically detectable effect of ", params$statistically_detectable_effect_metric, " = ", params$statistically_detectable_effect_value,",")}` `r if(params$expected_effect_from_meta == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$expected_effect_from_study == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$distribution_effect != ""){paste0("and a distribution of effect sizes in the literature as described below:")}`
 ```{r echo = FALSE, comment = NA}
 if(params$distribution_effect != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$distribution_effect))}
 ```
 
-Given the inferential goal:
-
 ```{r echo = FALSE}
 
 if(params$power_goal == "yes") {
-    inferential_goal_final_summary <- paste0("The inferential goal is based on a ", params$power_type, " with an alpha level of ", params$alpha_level, power_desired)
+    inferential_goal_final_summary <- paste0("based on a ", params$power_type, " with an alpha level of ", params$alpha_level, power_desired)
     } else if (
       params$estimate == "yes") {
-      inferential_goal_final_summary <- paste0("The **inferentional goal** is to estimate parameters with a desired **accuracy** ", params$desired_accuracy, " ", params$estimate_metric, assurance, ".")
+      inferential_goal_final_summary <- paste0("to estimate parameters with a desired accuracy ", params$desired_accuracy, " ", params$estimate_metric, assurance, ".")
     } else if (
       params$decision == "yes") {
-      inferential_goal_final_summary <- paste0("The **inferentional goal** is to make a **decision** based on the judgment that a Type I error is ", params$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", params$alpha_level, ", and the desired power is ", params$power)
+      inferential_goal_final_summary <- paste0("to make a decision based on the judgment that a Type I error is ", params$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", params$alpha_level, ", and the desired power is ", params$power)
     }
 
 ```
 
-`r paste(inferential_goal_final_summary)`
+and given the inferential goal `r paste(inferential_goal_final_summary)`,
+
+the sample size in the planned study consists a total of `r params$participants` participants, each contributing `r params$observations` observations. The following additional details about the sample size were provided: 
+
+```{r echo = FALSE, comment = NA}
+cat(gsub(pattern = "\n", replacement = "  \n", x = params$participants_details))
+```
+
+An explanation of the informational value of the sample size that will be collected, given any resource constraints, the effects of interest, and the inferential goal, is provided below:
 
 ```{r echo = FALSE, comment = NA}
 cat(gsub(pattern = "\n", replacement = "  \n", x = params$informational_value))
 ```
+
