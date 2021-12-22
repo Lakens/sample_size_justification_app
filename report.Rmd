@@ -1,0 +1,273 @@
+---
+title: "Sample Size Justification"
+output: html_document
+
+date: '`r format(Sys.time(), "%B %d, %Y")`'
+
+params:
+  description_population: NA,
+  collect_entire_population: NA,
+  description_constraints: NA,
+  effect_of_interest: NA,
+  minimal_detectable: NA,
+  expected_effect: NA,
+  expected_effect_metric_meta: NA,
+  expected_effect_metric_study: NA,
+  expected_effect_value_meta: NA,
+  expected_effect_value_study: NA,
+  expected_effect_from_meta: NA, 
+  sesoi_effect_value: NA,
+  sesoi_effect_metric: NA,
+  statistically_detectable_effect_value: NA,
+  statistically_detectable_effect_metric: NA,
+
+  describe_similarity_meta: NA,
+  describe_homogeneity_meta: NA,
+  describe_bias_meta: NA,
+  expected_effect_from_study: NA,
+  describe_similarity_study: NA,
+  describe_uncertainty_study: NA,
+  describe_bias_study: NA,
+  distribution_effect: NA,
+  meta_analysis: NA,
+  decision: NA,
+  relative_cost: NA,
+  alpha_level: NA,
+  power: NA,
+  effect_size: NA,
+  effect_metric_1: NA,
+  effect_metric_2: NA,
+  relative_cost_code: NA,
+  estimate: NA,
+  interval_metric: NA,
+  desired_accuracy: NA,
+  assurance: NA,
+  estimation_code: NA,
+  power_goal: NA,
+  power_type: NA,
+  power_analysis_code: NA,
+  informational_value: NA,
+  
+---
+
+
+```{r setup, warning=FALSE, message=FALSE, echo=FALSE}
+#options(knitr.table.format = 'markdown')
+```
+
+
+Below are four parts of the sample size justification. The description of the population, and the resource constraints that determine how much of the population can be sampled, a description of which effect sizes are of interest, and an overview of the inferential goal of the study. The last section on the informational value of the study evaluates what information this study contributes about effect sizes of interest, given the inferential goal and the resource constraints. 
+
+# A: Sample Description
+
+**Description of the population**
+
+```{r, echo = FALSE, comment = NA}
+cat(gsub(pattern = "\n", replacement = "  \n", x = as.character(params$description_population)))
+```
+
+**Can you collect data from the entire population?**
+
+
+```{r, echo = FALSE, comment = NA}
+cat(params$collect_entire_population)
+```
+
+**Description of Resource Constraints**
+
+```{r, echo = FALSE, comment = NA}
+cat(gsub(pattern = "\n", replacement = "  \n", x = as.character(params$description_constraints)))
+```
+`r if(params$description_constraints == ""){paste("*No further details about the resource constraints were provided*")}`
+
+# B: Effects of Interest
+
+`r if(params$effect_of_interest != "" | (is.na(params$sesoi_effect_value) == FALSE)){paste("**Information about the Smallest Effect Size of Interest**:")}`
+
+`r if(is.na(params$sesoi_effect_value) == FALSE){paste0("The smallest effect size of interest size is specified as a ", params$sesoi_effect_metric, " of ", params$sesoi_effect_value,".")}`
+
+`r if(params$effect_of_interest != ""){paste("The following details were provided about the smallest effect size of interest:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$effect_of_interest != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$effect_of_interest))}
+```
+
+`r if(params$minimal_detectable != "" | (is.na(params$statistically_detectable_effect_value) == FALSE)){paste("**Information about the Minimal Statistically Detectable Effect**:")}`
+
+`r if(is.na(params$statistically_detectable_effect_value) == FALSE){paste0("The minimal statistically detectable effect is specified as a ", params$statistically_detectable_effect_metric, " of ", params$statistically_detectable_effect_value,".")}`
+
+`r if(params$minimal_detectable != ""){paste("The following details were provided about the minimal statistically detectable effect:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$minimal_detectable != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$minimal_detectable))}
+```
+
+
+```{r echo = FALSE}
+if(params$expected_effect_from_meta == "yes") {
+    expected_effect_summary <- paste0("The expected effect size is based on a **meta-analysis**. The expected effect size is a ", params$expected_effect_metric_meta, " of ", params$expected_effect_value_meta,".")
+    } else if (
+      params$expected_effect_from_study == "yes") {
+      expected_effect_summary <- paste0("The expected effect size is based on a **previous study**. The expected effect size is a ", params$expected_effect_metric_study, " of ", params$expected_effect_value_study,".")
+    }
+``` 
+
+`r if(params$expected_effect_from_meta == "yes"){paste("**Information about the Expected Effect Size**")}`
+`r if(params$expected_effect_from_study == "yes"){paste("**Information about the Expected Effect Size**")}`
+
+`r if(params$expected_effect_from_meta == "yes"){paste(expected_effect_summary)}`
+`r if(params$expected_effect_from_study == "yes"){paste(expected_effect_summary)}`
+
+`r if(params$expected_effect_from_meta == "yes"){paste("An evaluation of the similarity of the meta-analysis with the planned study, a citation of the meta-analysis, and details about the effect size in the meta-analysis are provided below:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$expected_effect_from_meta == "yes"){cat(gsub(pattern = "\n", replacement = "  \n", x = params$describe_similarity_meta))}
+```
+
+`r if(params$expected_effect_from_meta == "yes"){paste("An evaluation of the heterogeneity in the meta-analysis, and which subsample of studies would be most relevant to the study that is being planned, is provided below:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$expected_effect_from_meta == "yes"){cat(gsub(pattern = "\n", replacement = "  \n", x = params$describe_homogeneity_meta))}
+```
+
+`r if(params$expected_effect_from_meta == "yes"){paste("An evaluation of whether the meta-analytic effect size estimate is unbiased, and if not, a computed effect size estimate that attempts to correct for bias, or a more conservative effect size estimate, is provided below:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$expected_effect_from_meta == "yes"){cat(gsub(pattern = "\n", replacement = "  \n", x = params$describe_bias_meta))}
+```
+
+`r if(params$expected_effect_from_study == "yes"){paste("An evaluation of the similarity of the previous study with the planned study, a citation of the previous study, and details about the effect size from the previous study are provided below:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$expected_effect_from_study == "yes"){cat(gsub(pattern = "\n", replacement = "  \n", x = params$describe_similarity_study))}
+```
+
+`r if(params$expected_effect_from_study == "yes"){paste("An evaluation of the uncertainty in the effect size estimate in the previous study, and how this is dealt with (e.g., choosing a more consevative estimate) is provided below:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$expected_effect_from_study == "yes"){cat(gsub(pattern = "\n", replacement = "  \n", x = params$describe_uncertainty_study))}
+```
+
+`r if(params$expected_effect_from_study == "yes"){paste("An evaluation of whether the effect size estimate of the previous is unbiased, and if not, any approach to correct for bias, or decisions about the use of a more conservative effect size estimate is provided below:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$expected_effect_from_study == "yes"){cat(gsub(pattern = "\n", replacement = "  \n", x = params$describe_bias_study))}
+```
+
+`r if(params$expected_effect != ""){paste("The following additional information about the expected effect size has been provided:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$expected_effect != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$expected_effect))}
+```
+
+`r if(params$distribution_effect != ""){paste("The following information about the **Distribution of Effect Sizes in This Research Area** has been provided:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$distribution_effect != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$distribution_effect))}
+```
+
+
+# C: Inferential Goal
+
+```{r echo = FALSE}
+
+power_metric_1 <- ifelse(params$effect_metric_1 != "Other. Specify in the Sample Size Computation field", params$effect_metric_1, "")
+
+power_metric_2 <- ifelse(params$effect_metric_2 != "Other. Specify in the Sample Size Computation field", params$effect_metric_2, "")
+
+estimate_metric <- ifelse(params$interval_metric != "Other. Specify in the Sample Size Computation field", params$interval_metric, "Interval (see below for details)")
+
+assurance <- ifelse(params$assurance, paste0(" with an assurance level of ", params$assurance), "")
+
+
+if(params$power_type == "a-priori power analysis"){
+  power_desired <- paste0(", and the desired power is ", params$power,".")
+}
+if(params$power_type == "compromise power analysis"){
+  power_desired <- paste0(", and the desired power is ", params$power,".")
+}
+if(params$power_type == "sensitivity power analysis"){
+  power_desired <- paste("")
+}
+  
+if(params$power_goal == "yes") {
+    inferential_goal_summary <- paste0("The **inferential goal** is to perform a hypothesis test with a certain **statistical power**, computed by a ", params$power_type, ". The chosen alpha level is ", params$alpha_level, power_desired, " A justification for the chosen alpha level and desired power (or for a sensitivity power analysis, the achieved power for effects of interest), and details of the power calculation (preferably in reproducible code) is provided below.")
+    } else if (
+      params$estimate == "yes") {
+      inferential_goal_summary <- paste0("The **inferentional goal** to estimate parameters with a desired **accuracy** ", params$desired_accuracy, " ", params$estimate_metric, assurance, ". Details related to the sample size computation:")
+    } else if (
+      params$decision == "yes") {
+      inferential_goal_summary <- paste0("The **inferentional goal** is to make a **decision**. It has been decided that making a Type I error is ", params$relative_cost, " times as costly as a Type II error. The chosen alpha level is ", params$alpha_level, ", the desired power is ", params$power,", which is based on an effect size ", power_metric_1, " of ", params$effect_size,". Details related to the sample size computation:")
+    }
+
+if(params$power_goal == "yes") {
+    code_summary <- params$power_analysis_code
+    } else if (
+      params$estimate == "yes") {
+      code_summary <- params$estimation_code
+    } else if (
+      params$decision == "yes") {
+      code_summary <- params$relative_cost_code
+    }
+
+
+```
+
+`r paste(inferential_goal_summary)`
+`r if(code_summary != ""){paste(code_summary)}`
+`r if(code_summary == ""){paste("*No further details or justifications for chosen values were provided*")}`
+
+
+```{r echo = FALSE, comment = NA}
+cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary))
+```
+
+
+# D: Informational Value of the Study
+
+Based on the resource constraints, the effects of interest, and the inferential goals, the following evaluation of the **informational value** of the study has been provided:
+
+Given the following resource constraints: 
+
+```{r, echo = FALSE, comment = NA}
+cat(gsub(pattern = "\n", replacement = "  \n", x = as.character(params$description_constraints)))
+```
+
+
+```{r echo = FALSE}
+# Final summary
+if(params$expected_effect_from_meta == "yes") {
+    expected_effect_final_summary <- paste0("an expected effect size of ", params$expected_effect_metric_meta, " = ", params$expected_effect_value_meta,"")
+    } else if (
+      params$expected_effect_from_study == "yes") {
+      expected_effect_final_summary <- paste0("an expected effect size of ", params$expected_effect_metric_study, " = ", params$expected_effect_value_study,"")
+    }
+``` 
+
+Given `r if(is.na(params$sesoi_effect_value) == FALSE){paste0("a smallest effect size of interest size of ", params$sesoi_effect_metric, " = ", params$sesoi_effect_value,",")}` `r if(is.na(params$statistically_detectable_effect_value) == FALSE){paste0("a minimal statistically detectable effect of ", params$statistically_detectable_effect_metric, " = ", params$statistically_detectable_effect_value,",")}` `r if(params$expected_effect_from_meta == "yes"){paste(expected_effect_final_summary)}` `r if(params$expected_effect_from_study == "yes"){paste(expected_effect_final_summary)}` `r if(params$distribution_effect != ""){paste("and a distribution of effect sizes in the literature as described below:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$distribution_effect != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$distribution_effect))}
+```
+
+Given the inferential goal:
+
+```{r echo = FALSE}
+
+if(params$power_goal == "yes") {
+    inferential_goal_final_summary <- paste0("The inferential goal is based on a ", params$power_type, " with an alpha level of ", params$alpha_level, power_desired)
+    } else if (
+      params$estimate == "yes") {
+      inferential_goal_final_summary <- paste0("The **inferentional goal** is to estimate parameters with a desired **accuracy** ", params$desired_accuracy, " ", params$estimate_metric, assurance, ".")
+    } else if (
+      params$decision == "yes") {
+      inferential_goal_final_summary <- paste0("The **inferentional goal** is to make a **decision** based on the judgment that a Type I error is ", params$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", params$alpha_level, ", and the desired power is ", params$power)
+    }
+
+```
+
+`r paste(inferential_goal_final_summary)`
+
+```{r echo = FALSE, comment = NA}
+cat(gsub(pattern = "\n", replacement = "  \n", x = params$informational_value))
+```
