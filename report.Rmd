@@ -59,7 +59,7 @@ params:
 ```
 
 
-Below are four parts of the sample size justification. The description of the population, and the resource constraints that determine how much of the population can be sampled, a description of which effect sizes are of interest, and an overview of the inferential goal of the study. The last section on the informational value of the study evaluates what information this study contributes about effect sizes of interest, given the inferential goal and the resource constraints. 
+Below are four sections of the sample size justification. oIn part A the description of the population, and the resource constraints that determine how much of the population can be sampled, are presented. In part B a description of which effect sizes are of interest is provided. In part C an overview of the inferential goal of the study is specified. In part D the sample size that will be collected is specified and the informational value of the study is evaluated. 
 
 # A: Sample Description
 
