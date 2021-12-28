@@ -59,7 +59,7 @@ params:
 ```
 
 
-Below are four sections of the sample size justification. oIn part A the description of the population, and the resource constraints that determine how much of the population can be sampled, are presented. In part B a description of which effect sizes are of interest is provided. In part C an overview of the inferential goal of the study is specified. In part D the sample size that will be collected is specified and the informational value of the study is evaluated. 
+Below are four sections of the sample size justification. Part A contains a description of the population, as well as a description of the resource constraints that determine how much of the population can be sampled. In part B a description of which effect sizes are of interest is provided. In part C an overview of the inferential goal of the study is specified. In part D the sample size that will be collected is reported, and the informational value of the study is evaluated. 
 
 # A: Sample Description
 
@@ -71,12 +71,11 @@ cat(gsub(pattern = "\n", replacement = "  \n", x = as.character(params$descripti
 
 **Can you collect data from the entire population?**
 
-
 ```{r, echo = FALSE, comment = NA}
 cat(params$collect_entire_population)
 ```
 
-**Description of Resource Constraints**
+**Description of resource constraints**
 
 ```{r, echo = FALSE, comment = NA}
 cat(gsub(pattern = "\n", replacement = "  \n", x = as.character(params$description_constraints)))
@@ -217,14 +216,15 @@ if(params$power_goal == "yes") {
 ```
 
 `r paste(inferential_goal_summary)`
-`r if(code_summary != ""){paste(code_summary)}`
+
 `r if(code_summary == ""){paste("*No further details or justifications for chosen values were provided*")}`
 
 
 ```{r echo = FALSE, comment = NA}
-cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary))
+if(code_summary != ""){
+  cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary))
+}
 ```
-
 
 # D: Informational Value of the Study
 

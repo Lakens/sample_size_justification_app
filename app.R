@@ -32,21 +32,21 @@ ui <- dashboardPage(
     tabItems(
       tabItem(
         tabName = "about",
-        h4("This Shiny app accompanies the paper 'Sample Size Justification' by Daniël Lakens. You can download the pre-print of this article at ", a("PsyArXiV", href = "https://psyarxiv.com/9d3yf/"), ". You can help to improve this app by providing feedback or suggest additions by filling out ", a("this feedback form", href = "https://docs.google.com/forms/d/e/1FAIpQLSdWAtBdv2VnlIWMwSeHK9syZnAw5P2Q9yJs_9hvFy0j9daSYQ/viewform?usp=sf_link"),
-           HTML("<br><br>The main goal of this app and the accompanying paper is to guide you through an evaluation of the <b>informational value</b> of the study. After filling out this form you can download a report of your sample size justification."),
+        h4("This Shiny app accompanies the paper 'Sample Size Justification' by Daniël Lakens. You can download the pre-print of this article at ", a("PsyArXiV", href = "https://psyarxiv.com/9d3yf/"), ". You can help to improve this app by providing feedback or suggest additions by filling out ", a("this feedback form", href = "https://docs.google.com/forms/d/e/1FAIpQLSdWAtBdv2VnlIWMwSeHK9syZnAw5P2Q9yJs_9hvFy0j9daSYQ/viewform?usp=sf_link", target="_blank","."),
+           HTML("<br><br>The main goal of this app and the accompanying paper is to guide you through an evaluation of the <b>informational value</b> of a planned study. After filling out this form you can download a report of your sample size justification."),
            HTML("<br><br>The informational value of a study depends on the <b>inferential goal</b>, which could be testing a hypothesis, obtaining an accurate estimate, or seeing what you can learn from all the data you have the resources to collect."),
            HTML("<h4><ul><li>It is possible that your resource constraints allow you to perform a study that has: 
           <ul><li> a desired <b>statistical power</b>, or </ul></li> 
           <ul><li>  a desired <b>accuracy of the estimated effect</b></ul></li> 
-          and your resource constraints are not the primary reason to collect a specific sample size (even though resource constraints are always a secondary reason to collect a certain sample size, as without resource constraints, one would for example choose a very low alpha level and design a study that has incredibly high statistical power). In these cases, you would
-          <ul><li> perform a <b>power analysis</b> for the <b>smallest effect sizes of interest</b> or, if that can not be specified, for an <b>expected effect size</b>.</ul></li> 
-          <ul><li> determine the sample size based on an <b>accuracy in parameter estimates</b> perspective, based on the <b>desired accuracy</b> and the <b>expected effect size</b>.</ul></li></h4>
+          and your resource constraints are not the primary reason to collect a specific sample size (even though resource constraints are always a secondary reason to collect a certain sample size, as without resource constraints, one would for example choose a very low alpha level and design a study that has incredibly high statistical power). In these cases, you would:
+          <ul><li> perform an a-priori <b>power analysis</b> for the <b>smallest effect sizes of interest</b> or, if that can not be specified, for an a-priori power analysis for an <b>expected effect size</b>.</ul></li> 
+          <ul><li> determine the sample size using an <b>accuracy in parameter estimates</b> perspective, based on the <b>desired accuracy</b> and the <b>expected effect size</b>.</ul></li></h4>
           <h4><ul><li>It is also possible that the calculations based on power and accuracy yield a sample size that is larger than you have the resources to collect. In these situations, you can:
           <ul><li> not draw any inferences, and collect the data so they can be included in a <b>future meta-analysis</b>.</ul></li> 
-          <ul><li> justify the sample size because a <b>decision</b> needs to be made, even if data is scarce, and design a study based on a <b> compromise power analysis</b> that allows you to sufficiently reduce the relative probability of Type 1 and Type II error rates based on cost-benefit analysis</ul></li>
+          <ul><li> justify the sample size because a <b>decision</b> needs to be made, even if data is scarce, and design a study based on a <b> compromise power analysis</b> that allows you to sufficiently reduce the relative probability of Type 1 and Type II error rates based on a cost-benefit analysis</ul></li>
           <ul><li> If you still want to perform a hypothesis test, perform a <b>sensitivity power analysis</b>, justify the sample size based on the information it will provide about the <b>expected effect size</b> or other effect sizes of interest, such as effects previously observed in the literature. 
-          If you plan to perform a hypothesis test, examine if the <b>minimal statistically detectable effect</b> is large enough to warrant a hypothesis test, and evaluate whether the Type 1 error rate and the Type II error rate make it possible to draw useful conclusions based on the <i>p</i>-value, or not. 
-          If you want to estimate and effect size, interpret the <b>width of the estimate</b>, and specify what an estimate with this accuracy is useful for.</ul></li>
+          If you plan to perform a hypothesis test, examine if the <b>minimal statistically detectable effect</b> is large enough to warrant a hypothesis test, and evaluate whether the Type 1 error rate and the Type II error rate make it possible to draw useful conclusions based on the <i>p</i>-value, or not.</ul></li>
+          <ul><li>If you want to estimate an effect size, interpret the <b>width of the confidence interval around the estimate</b>, and specify what an estimate with this accuracy is useful for.</ul></li>
           </ul></li></h4>
           
           "),
@@ -59,7 +59,7 @@ ui <- dashboardPage(
         h2("Describe Your Population"),
         box(
           collapsible = TRUE, title = "Describe the population and its size", solidHeader = TRUE, status = "primary", width = 12, 
-          h4("Describe the population you are sampling from, including its estimated size when the population is finite. Indicate methods of recruitment, selection and inclusion/exclusion criteria, details of any stratification sampling used, planned participant characteristics, and compensation amount and method."),
+          h4("Describe the population you are sampling from, including its estimated size when the population is finite. Indicate methods of recruitment, selection and inclusion/exclusion criteria, details of any stratification sampling used, planned participant characteristics, and compensation amount and method. (Overlaps with M4 in the ", a("PQRP checklist", href = "https://docs.google.com/spreadsheets/d/1vlp5GN-HXrtrjCdjE28f_3tT6RiwhQO2vVeOZGOaFsQ/edit#gid=0", target="_blank"),")."),
           textAreaInput("population", rows = 5, "")
         ),
         box(
@@ -72,7 +72,7 @@ ui <- dashboardPage(
           id = "describe_constraints_q",
           box(
             collapsible = TRUE, title = "Describe your resource constraints.", solidHeader = TRUE, status = "primary", width = 12, 
-            h4("Describe your resource constraints (e.g., time and money), and how these limit the maximum sample size you are willing and able to collect. Note that in the subsequent steps, you might provide justifications to collect a smaller sample size than this maximum. It is also possible that the maximum sample size based on resource constraints is the main justification for the sample size (i.e., a *resource constraints justification*). This happens when, for example, an a-priori power analysis for the smallest effect size of interest yields a required sample size that is larger than the resources you have available. This is common, as there are almost always resource constraints, but it requires a careful evaluation of the informational value of the study. "),
+            h4(HTML("Describe your <b>resource constraints</b> (e.g., time and money), and how these limit the <b>maximum sample size</b> you are willing and able to collect. Note that in the subsequent steps, you might provide justifications to collect a smaller sample size than this maximum. It is also possible that the maximum sample size based on resource constraints is the main justification for the sample size (i.e., a <b>resource constraints justification</b>). This happens when, for example, an a-priori power analysis for the smallest effect size of interest yields a required sample size that is larger than the resources you have available. This is common, as there are almost always resource constraints, but it requires a careful evaluation of the informational value of the study. ")),
               textAreaInput("describe_constraints", NULL, rows = 5,
             placeholder = ""
           ),
