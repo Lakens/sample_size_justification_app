@@ -3,7 +3,6 @@ library(shinydashboard)
 library(shinyjs)
 library(rmarkdown)
 library(knitr)
-library(kableExtra)
 
 ui <- dashboardPage(
   skin = "blue",
