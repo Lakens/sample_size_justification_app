@@ -31,7 +31,7 @@ ui <- dashboardPage(
     tabItems(
       tabItem(
         tabName = "about",
-        h4("This Shiny app accompanies the paper 'Sample Size Justification' by Daniël Lakens. You can download the pre-print of this article at ", a("PsyArXiV", href = "https://psyarxiv.com/9d3yf/"), ". You can help to improve this app by providing feedback or suggest additions by filling out ", a("this feedback form", href = "https://docs.google.com/forms/d/e/1FAIpQLSdWAtBdv2VnlIWMwSeHK9syZnAw5P2Q9yJs_9hvFy0j9daSYQ/viewform?usp=sf_link", target="_blank","."),
+        h4("This Shiny app accompanies the paper 'Sample Size Justification' by Daniël Lakens. You can download the pre-print of this article at ", a("PsyArXiV", href = "https://psyarxiv.com/9d3yf/"), ". You can help to improve this app by providing feedback or suggest additions by filling out ", a("this feedback form", href = "https://docs.google.com/forms/d/e/1FAIpQLSdWAtBdv2VnlIWMwSeHK9syZnAw5P2Q9yJs_9hvFy0j9daSYQ/viewform?usp=sf_link", target="_blank"),". Note that this app will not store the information you enter if you close or refresh you browser. You might want to write down answers in a local text file first. For a completed example, see", a("here", href ="https://shiny.ieis.tue.nl/examples/example_vantveer_lakens.html", target="_blank"),".",
            HTML("<br><br>The main goal of this app and the accompanying paper is to guide you through an evaluation of the <b>informational value</b> of a planned study. After filling out this form you can download a report of your sample size justification."),
            HTML("<br><br>The informational value of a study depends on the <b>inferential goal</b>, which could be testing a hypothesis, obtaining an accurate estimate, or seeing what you can learn from all the data you have the resources to collect."),
            HTML("<h4><ul><li>It is possible that your resource constraints allow you to perform a study that has: 
@@ -99,7 +99,7 @@ ui <- dashboardPage(
             "sesoi_effect_metric", "What is the effect size metric used above?",
             c("", "Cohen's d", "Hedges' g", "Cohen's dz", "Correlation", "Odds Ratio", "Risk Ratio", "Proportion Effect Size g", "Cohen's f", "Partial Eta Squared", "Partial Omega Squared", "Cohen's w (contingency table)", "Phi (contingency table)", "Cramer's V (contingency table)", "Cohen's q (correlation differences)", "Cohen's h (independent proportions)", "Other. Specify in the field below")
           ),
-          textAreaInput("effect_of_interest", "Add any justifications for the effect size above, including any code used to compute the value. If the smallest effect of interest is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.", rows = 5, "")
+          textAreaInput("effect_of_interest", "Add any justifications for the effect size above, including any code used to compute the value. If the smallest effect of interest is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field. Then add all information required to justify the effect size of interest (e.g., proportion of variance explained, intraclass correlation coeffients, etc.).", rows = 5, "")
         ),
         box(
           collapsible = TRUE, title = "Minimal Statistically Detectable Effect", solidHeader = TRUE, status = "primary", width = 12, 
@@ -109,7 +109,7 @@ ui <- dashboardPage(
             "statistically_detectable_effect_metric", "What is the effect size metric used above?",
             c("", "Cohen's d", "Hedges' g", "Cohen's dz", "Correlation", "Odds Ratio", "Risk Ratio", "Proportion Effect Size g", "Cohen's f", "Partial Eta Squared", "Partial Omega Squared", "Cohen's w (contingency table)", "Phi (contingency table)", "Cramer's V (contingency table)", "Cohen's q (correlation differences)", "Cohen's h (independent proportions)", "Other. Specify in the field below")
           ),
-            textAreaInput("minimal_detectable", "Add any justifications for the effect size above, including any code used to compute the value. If the minimal statistically detectable effect is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.", rows = 5, "")
+            textAreaInput("minimal_detectable", "Add any justifications for the effect size above, including any code used to compute the value. If the minimal statistically detectable effect is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.  Then add all information required to justify the effect size of interest (e.g., proportion of variance explained, intraclass correlation coeffients, etc.).", rows = 5, "")
         ),
         box(
           collapsible = TRUE, title = "Expected Effect Size", solidHeader = TRUE, status = "primary", width = 12, 
@@ -176,7 +176,7 @@ ui <- dashboardPage(
                 c("", "Cohen's d", "Hedges' g", "Cohen's dz", "Correlation", "Odds Ratio", "Risk Ratio", "Proportion Effect Size g", "Cohen's f", "Partial Eta Squared", "Partial Omega Squared", "Cohen's w (contingency table)", "Phi (contingency table)", "Cramer's V (contingency table)", "Cohen's q (correlation differences)", "Cohen's h (independent proportions)", "Other. Specify in the field below")
               ))
           )),
-          textAreaInput("expected_effect", "Add any justifications for the expected effect size, including any code used to compute the value. If the expected effect size from a meta-analysis or previous study is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.", rows = 15, "")
+          textAreaInput("expected_effect", "Add any justifications for the expected effect size, including any code used to compute the value. If the expected effect size from a meta-analysis or previous study is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.  Then add all information required to justify the effect size of interest (e.g., proportion of variance explained, intraclass correlation coeffients, etc.).", rows = 15, "")
         ),
         box(
           collapsible = TRUE, title = "Distribution of Effect Sizes", solidHeader = TRUE, status = "primary", width = 12, 
@@ -224,7 +224,7 @@ ui <- dashboardPage(
             numericInput("relative_cost", "Relative Cost Type 1 Error vs. Type 2 Error", value = 4),
             numericInput("alpha_level", "Alpha level", value = 0.05, min = 0, max = 1, step = 0.001),
             numericInput("power", "Desired level of statistical power", value = 0.90, min = 0, max = 1, step = 0.01),
-            textAreaInput("relative_cost_code", NULL, rows = 5, label = "Provide a justification for the relative cost (including any computations this justification is based on). Provide a justification for the chosen alpha level and power. Include details about the power calculation (preferably in reproducible code).", placeholder = "t tests - Means: Difference between two independent means (two groups)
+            textAreaInput("relative_cost_code", NULL, rows = 5, label = "Provide a justification for the relative cost (including any computations this justification is based on). Provide a justification for the chosen alpha level, power, and directionality of the test (i.e., one-sided or two-sided). Include all details about the power calculation (preferably in reproducible code), and justify each input.", placeholder = "t tests - Means: Difference between two independent means (two groups)
 Analysis:	Compromise: Compute implied α & power 
 Input:	Tail(s)	=	Two
 	Effect size d	=	0.3
@@ -568,7 +568,7 @@ server <- function(input, output, session) {
                      effect_metric_1 = as.character(values$effect_metric_1),
                      effect_metric_2 = as.character(values$effect_metric_2),
                      estimate = values$estimate,
-                     interval_metric = values$interval_metric,
+                     interval_metric = as.character(values$interval_metric),
                      desired_accuracy = values$desired_accuracy,
                      assurance = values$assurance,
                      estimation_code = values$estimation_code,

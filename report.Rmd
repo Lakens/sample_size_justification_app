@@ -177,7 +177,7 @@ power_metric_1 <- ifelse(params$effect_metric_1 != "Other. Specify in the Sample
 
 power_metric_2 <- ifelse(params$effect_metric_2 != "Other. Specify in the Sample Size Computation field", params$effect_metric_2, "")
 
-estimate_metric <- ifelse(params$interval_metric != "Other. Specify in the Sample Size Computation field", params$interval_metric, "Interval (see below for details)")
+estimate_metric <- ifelse(params$interval_metric != "Other. Specify in the Sample Size Computation field", as.character(params$interval_metric), "Interval (see below for details)")
 
 assurance <- ifelse(params$assurance, paste0(" with an assurance level of ", params$assurance), "")
 
@@ -193,36 +193,67 @@ if(params$power_type == "sensitivity power analysis"){
 }
   
 if(params$power_goal == "yes") {
-    inferential_goal_summary <- paste0("The **inferential goal** is to perform a hypothesis test with a certain **statistical power**, computed by a ", params$power_type, ". The chosen alpha level is ", params$alpha_level, power_desired, " A justification for the chosen alpha level and desired power (or for a sensitivity power analysis, the achieved power for effects of interest), and details of the power calculation (preferably in reproducible code) is provided below.")
-    } else if (
-      params$estimate == "yes") {
-      inferential_goal_summary <- paste0("The **inferentional goal** to estimate parameters with a desired **accuracy** ", params$desired_accuracy, " ", params$estimate_metric, assurance, ". Details related to the sample size computation:")
-    } else if (
-      params$decision == "yes") {
-      inferential_goal_summary <- paste0("The **inferentional goal** is to make a **decision**. It has been decided that making a Type I error is ", params$relative_cost, " times as costly as a Type II error. The chosen alpha level is ", params$alpha_level, ", the desired power is ", params$power,", which is based on an effect size ", power_metric_1, " of ", params$effect_size,". Details related to the sample size computation:")
+    inferential_goal_summary_power <- paste0("The **inferential goal** is to perform a hypothesis test with a certain **statistical power**, computed by a ", params$power_type, ". The chosen alpha level is ", params$alpha_level, power_desired, " A justification for the chosen alpha level and desired power (or for a sensitivity power analysis, the achieved power for effects of interest), and details of the power calculation (preferably in reproducible code) is provided below.")
+    } 
+
+if(params$estimate == "yes") {
+      inferential_goal_summary_accuracy <- paste0("The **inferentional goal** to estimate parameters with a desired **accuracy** based on a ", params$desired_accuracy, " ", estimate_metric, ". Details related to the sample size computation:")
+    } 
+if (params$decision == "yes") {
+      inferential_goal_summary_decision <- paste0("The **inferentional goal** is to make a **decision**. It has been decided that making a Type I error is ", params$relative_cost, " times as costly as a Type II error. The chosen alpha level is ", params$alpha_level, ", the desired power is ", params$power,", which is based on an effect size ", power_metric_1, " of ", params$effect_size,". Details related to the sample size computation:")
     }
 
 if(params$power_goal == "yes") {
-    code_summary <- params$power_analysis_code
-    } else if (
-      params$estimate == "yes") {
-      code_summary <- params$estimation_code
-    } else if (
-      params$decision == "yes") {
-      code_summary <- params$relative_cost_code
-    }
+    code_summary_power <- params$power_analysis_code
+} else if(params$power_goal == "no") {
+  code_summary_power <- ""
+}
 
-
+if (params$estimate == "yes") {
+      code_summary_accuracy <- params$estimation_code
+}  else if(params$estimate == "no") {
+  code_summary_accuracy <- ""
+}
+if (params$decision == "yes") {
+      code_summary_decision <- params$relative_cost_code
+}  else if(params$decision == "no") {
+  code_summary_decision <- ""
+}
 ```
 
-`r paste(inferential_goal_summary)`
+`r if(params$power_goal == "yes"){paste("The following information about the inferential goal related to **statistical power** has been provided:")}`
 
-`r if(code_summary == ""){paste("*No further details or justifications for chosen values were provided*")}`
+`r if(params$power_goal == "yes"){paste(inferential_goal_summary_power)}`
 
+`r if(params$power_goal == "yes" && code_summary_power == ""){paste("*No further details or justifications for chosen values were provided*")}`
 
 ```{r echo = FALSE, comment = NA}
-if(code_summary != ""){
-  cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary))
+if(code_summary_power != ""){
+  cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary_power))
+}
+```
+
+`r if(params$estimate == "yes"){paste("The following information about the inferential goal related to **estimation** has been provided:")}`
+
+`r if(params$estimate == "yes"){paste(inferential_goal_summary_accuracy)}`
+
+`r if(params$estimation == "yes" && code_summary_accuracy == ""){paste("*No further details or justifications for chosen values were provided*")}`
+
+```{r echo = FALSE, comment = NA}
+if(code_summary_accuracy != ""){
+  cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary_accuracy))
+}
+```
+
+`r if(params$decision == "yes"){paste("The following information about the inferential goal related to **a decision** has been provided:")}`
+
+`r if(params$decision == "yes"){paste(inferential_goal_summary_decision)}`
+
+`r if(params$decision == "yes" && code_summary_decision == ""){paste("*No further details or justifications for chosen values were provided*")}`
+
+```{r echo = FALSE, comment = NA}
+if(code_summary_decision != ""){
+  cat(gsub(pattern = "\n", replacement = "  \n", x = code_summary_decision))
 }
 ```
 
