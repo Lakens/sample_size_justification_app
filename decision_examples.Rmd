@@ -1,0 +1,16 @@
+---
+title: "Examples of a sample size justification based on a decision"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## From https://doi.org/10.1080/15389580600791362
+
+This example focusses on how to specify the ratio between the Type 1 and Type 2 error rate. It is also discussed in https://psyarxiv.com/ts4r6/.
+
+An applied example where the decision is not deterministically dominant can be found in Viamonte et al., 2006 who evaluate the benefits of a computerized intervention aimed at improving speed of processing to reduce car collisions in people aged 75 or older. They estimated that the risk of getting into an accident for these older drivers is 7.1\%. The cost of a collision was estimated to be \$22,000, or \$22,000 * 0.071 = 1,562.84 per driver in the USA. Furthermore, they estimate that the intervention can prevent accidents for 86\% of drivers. Therefore, the probability of a collision after intervention is now (1-0.86) * 0.071 = 0.00994. The total cost of completing the intervention was estimated to be \$274.50. When the intervention is implemented, some drivers will still get into a collision, so the total cost of the intervention and collisions is \$493.30 per driver (\$274.50 + 0.00994 * \$22,000).
+
+We can implement the intervention when it does not actually work, making a Type 1 error. The waste is \$274.50 per driver, as this is what the intervention costs even if it offers no benefits. If the intervention works, but it is not implemented, we make a Type 2 error and the amount of money that is not saved is \$1,562.84 (the cost of doing nothing) - 493.30 (the cost if the intervention was implemented), for a waste of 1.069,54 per driver. This means that the relative cost of a Type 1 error compared to a Type 2 error is 274.50 /1.069,54 = 0.257, or the waste in money after a Type 1 error is 3.896 times (1.069,54/274.50) worse than a Type 2 error. This ratio reflects that the intervention is relatively cheap, and therefore a Type 1 error is not that costly, while the potential savings if collisions are prevented is relatively large. Of course, quantifying costs and benefits comes with uncertainties. The intervention might prevent more or less accidents, the risks of an accident for drivers of 75 years or older might be greater or smaller, etcetera. Sensitivity analyses can be used to compute a range of the ratio of the costs of Type 1 and Type 2 errors (see Viamonte et al., 2006). 

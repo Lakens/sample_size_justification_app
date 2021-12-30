@@ -1,0 +1,28 @@
+---
+title: "Examples of specifying a smallest effect size of interest"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## From http://dx.doi.org/10.1111/lcrp.12186
+
+*The example below uses the small telescopes approach proposed by Simonsohn (2015) for direct replication studies.*
+
+The sample size for the direct replication is determined based on an a priori power analysis. Relying on the effect sizes of the original study is not recommended when designing replication studies, as this leads to underpowered replications (Albers & Lakens, 2018; Simonsohn, 2015). We therefore determined first the smallest effect size of interest (SESOI; Lakens,Scheel,& Isager, 2018) by following Simonsohn’s (2015) advise to consider the effect size that would give the original study 33% power. The SESOI is determined as f2 = 0.016 - a small effect. Conducting an a-priori power analysis for multiple regressions - a=.05, power=.95 - then yields a target sample size of N = 1,378.
+
+## From http://dx.doi.org/10.1037/pro0000386
+
+Several decades ago Meehl (1991) suggested that many small findings in psychology could be “crud,” a tendency for everything to correlate with everything else a tiny amount. The current article sought to provide some preliminary examination of the crud phenomenon-in a large sample of adolescents with aggressive delinquency as an outcome. Analyses from Study 1 suggest that with effect sizes below r = .10, a majority of nonsense relationships achieve statistical significance, with some approaching or slightly exceeding the value of r = .10. These results suggest a higher than tolerable probability for false-positive findings among effect sizes
+below r = .10 among large sample studies. It is interesting that some of these variables produced effect sizes higher than for screen use, a variable often considered important by psychologists when considering aggression. This highlights the potential for spurious interpretation of weak effects.
+
+With Study 2, mean effect sizes were slightly higher, around r = .11. This suggests that even some effect sizes exceeding r = .11 and “statistically significant” in large datasets may be artifactual in nature. Though there is no definite hard “cut-off” effect size,
+confidence in the meaningfulness of statistically significant effect sizes should clearly decrease the nearer they approximate 0. In the two datasets, only a single crud relationship exceeded r = .20. As a practical suggestion, it is recommended that effect sizes
+below r = .10 should not be interpreted as evidence in support of a hypothesis, at least of one claiming the existence of a univariable relationship or a univariable causal effect.
+
+
+## From https://osf.io/kd4ax
+
+Our sample size estimate was based upon identifying a smallest effect size of interest that would indicate that one intervention produced meaningfully more fat mass loss than the other. That is to say the between condition treatment effect was of a magnitude that is considered a meaningful fat loss. The ACSM position stand suggests a 3% body mass loss as the smallest effect that leads to health improvements. Further, we expected this might be a reasonable magnitude of effect given our interventions as previous research has reported ~3.3% absolute fat mass loss for resistance exercise and similar dietary intervention over a one month period (Miller et al., 2017). 

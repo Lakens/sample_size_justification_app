@@ -1,0 +1,23 @@
+---
+title: "Examples of specifying an expected effect size based on a previous study"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## From https://osf.io/pba8r/
+
+Data  from  Jones  and  Forster  (2014)  provide  an  estimate  of  what  we  should  expect  for  the  difference (endogenous minus exogenous) between cuing effects (cued minus uncued), but specifically in the case of  no  stimulation  (which  we  equate  to  beta/sham  in  the  proposed  new  experiment).  In  order  to  extrapolate from these data to the new design for the purposes of estimating power, we have made the following assumptions /calculations: 
+
+1. The exogenous cuing effect (i.e., IOR) will be unaffected by alpha stimulation, but the endogenous cuing  effect (i.e., facilitation of  RTs) will be reduced  to  zero.  Although  not  a conservative assumption, we consider this reasonable in combination with: 
+
+2. The  size  of  the difference  between endogenous and exogenous cueing effects  (i.e.  the  2x2 interaction)  under  sham/beta  stimulation  can be  estimated  as  the lower  bound of  the  95% confidence interval estimated for this same RT difference from the Jones and Forster (2014) data – this yields a conservative anticipated effect of (at least) 76 ms. 
+
+3. The  corresponding  effect  under  alpha  stimulation  will  be  driven  by only  the  (unaffected) exogenous cuing effect, estimated from Jones and Forster (2014) as 20 ms. 
+
+4. The  difference  between the  values  determined  in  steps  2  and  3 (~56  ms)  equates  to  the anticipated 2x2x2 interaction. To derive a measure of Cohen’s D for this difference of differences between cuing effects, we must estimate the corresponding standard deviation. Here, we assume that under both alpha and beta/sham stimulation the SD of endogenous minus exogenous cuing effects will reflect that obtained without stimulation in Jones and Forster (2014). We then apply the  variance  sum  law, with the conservative  assumption  of  zero correlation  between  the difference  scores  that  represent  the  2x2  interaction  in  each  half  of  the  design  (alpha  vs. beta/sham). 
+
+By following these steps, we estimated a Cohen’s D (for  the  difference  score  best  representing  the anticipated 2x2x2 interaction) of 0.376. 
+This yields N = 77 to achieve 90% power with alpha set to 0.05. Participants who do not meet the selection criteria or whose data is lost or damaged due to unforeseeable circumstances will not contribute to this sample size. 

@@ -1,0 +1,16 @@
+---
+title: "Examples of a sensitivity power analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## From https://doi.org/10.1016/j.intell.2021.101615
+
+The sample size was constrained by available cases, not determined by a priori calculation. However, we established whether our sample size was sufficient for a minimum effect of interest through power analysis via simulation with 5000 iterations. Specifically, we simulated the SEM shown in Fig. 1, Fig. 2 using the covariance matrix from the Italian normative sample of the WISC-IV as the prior (Orsini et al., 2012). Concerning the minimum effects of interest, we set a coefficient for gender on the latent factors equivalent to a standardized effect of B = 0.10 (corresponding to Cohen's d = 0.20). As power is constrained by the smallest group, and our female subsample was just over 500, we performed all simulations with N = 1000. Considering a critical α = 0.05, power was slightly suboptimal: 82% for the VCI; 73% for the PRI; 69% for the WMI; 75% for the PSI; finally, it was 80% for the g-factor. Different models were simulated for each of the effects. For a slightly larger standardized effect of interest of B = 0.15 (corresponding to Cohen's d = 0.30), power seemed sufficient: 99% for the VCI; 98% for the PRI; 96% for the WMI; 98% for the PSI; 99% for the g-factor.
+
+## From https://doi.org/10.3758/s13414-021-02414-x
+
+To determine a target sample size, we used a recent meta-analysis to obtain the average effect size for an MWI, and calculated that this was 54% of the average effect size for the SWI (Saccone et al., 2019). We then calculated 54% of the smallest effect size found in Buckingham (2019) investigation of the SWI in different sensory conditions. This suggested an effect size of dz = .45 could be expected in the present study. A priori analysis showed that to detect this effect with .95 power in our planned follow-up t-tests, a sample of 55 would be required. However, due to the disruptions from COVID-19, the collected sample size was 29: this would give us a power of .76 to detect the estimated effect. 
