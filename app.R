@@ -94,6 +94,7 @@ ui <- dashboardPage(
         box(
           collapsible = TRUE, title = "Smallest Effect Size of Interest", solidHeader = TRUE, status = "primary", width = 12, 
           h4("What is the smallest effect size of interest (specify the metric and the value)? What is the justification to consider this the smallest effect size of interest? For example, is this the smallest effect that would be practically relevant, theoretically predicted, or that would reject a previously observed effect using the Small Telescopes approach?"),
+          h4("For examples, see", a("here", href ="https://shiny.ieis.tue.nl/examples/SESOI_examples.html", target="_blank"), "."),
           numericInput("sesoi_effect_value", "What is the value of the smallest effect size of interest?", value = "", step = 0.01),
           selectInput(
             "sesoi_effect_metric", "What is the effect size metric used above?",
@@ -129,6 +130,7 @@ ui <- dashboardPage(
             id = "describe_effect_expectation_meta_q",
             box(
               collapsible = TRUE, title = "Recommendations for effect size estimates from a meta-analysis.", solidHeader = TRUE, status = "primary", width = 12, 
+              h4("For examples, see", a("here", href ="https://shiny.ieis.tue.nl/examples/meta_examples.html", target="_blank"), "."),
               h4("Are the studies in the meta-analysis similar to the study you are planning? Evaluate the generalizability of the effect size in the meta-analysis to your study.  Include a citation to the meta-analysis, and if possible copy-paste text from the meta-analysis that reports the effect size."),
               textAreaInput("describe_similarity_meta", NULL, rows = 5,
                             placeholder = ""
@@ -158,6 +160,7 @@ ui <- dashboardPage(
             id = "describe_effect_expectation_study_q",
             box(
               collapsible = TRUE, title = "Recommendations for effect size estimates from a single study.", solidHeader = TRUE, status = "primary", width = 12, 
+              h4("For examples, see", a("here", href ="https://shiny.ieis.tue.nl/examples/previous_study_examples.html", target="_blank"), "."),
               h4("Is the previous study similar to the study you are planning? Evaluate the generalizability of the effect size in the previous study to your study. Include a citation to the study, and if possible copy-paste text from the original study that reports the effect size."),
               textAreaInput("describe_similarity_study", NULL, rows = 5,
                             placeholder = ""
@@ -220,6 +223,7 @@ ui <- dashboardPage(
           id = "decision_sub_q",
           box(
             collapsible = TRUE, title = "Specify cost/benefit considerations", solidHeader = TRUE, status = "primary", width = 12, 
+            h4("For examples, see", a("here", href ="https://shiny.ieis.tue.nl/examples/decision_examples.html", target="_blank"), "."),
             h4("Specify the parameters of the cost/benefit trade-off used in the power analysis."),
             numericInput("relative_cost", "Relative Cost Type 1 Error vs. Type 2 Error", value = 4),
             numericInput("alpha_level", "Alpha level", value = 0.05, min = 0, max = 1, step = 0.001),
@@ -269,6 +273,7 @@ Output:	Noncentrality parameter δ	=	3.0740852
           box(id = "power_q",
             collapsible = TRUE, title = "B4: Power", solidHeader = TRUE, status = "primary", width = 12, 
             h4("Is your inferential goal to achieve a desired statistical power for a statistical test?"),
+            h4("For examples of sensitivity power analyses, see", a("here", href ="https://shiny.ieis.tue.nl/examples/sensitivity_analysis_examples.html", target="_blank"), "."),
             selectInput(
               "power_goal", "",
               c("no", "yes")
