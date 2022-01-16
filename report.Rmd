@@ -28,6 +28,8 @@ params:
   describe_similarity_study: NA,
   describe_uncertainty_study: NA,
   describe_bias_study: NA,
+  width_effect_estimate: NA,
+  sensitivity_power: NA,
   distribution_effect: NA,
   meta_analysis: NA,
   decision: NA,
@@ -166,6 +168,18 @@ if(params$expected_effect_from_study == "yes"){cat(gsub(pattern = "\n", replacem
 if(params$expected_effect != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$expected_effect))}
 ```
 
+`r if(params$width_effect_estimate != ""){paste("The following information about the **Expected Width of the Confidence Interval** has been provided:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$width_effect_estimate != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$width_effect_estimate))}
+```
+
+`r if(params$sensitivity_power != ""){paste("The following information about the **Sensitivity Power Analysis** has been provided:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$sensitivity_power != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$sensitivity_power))}
+```
+
 `r if(params$distribution_effect != ""){paste("The following information about the **Distribution of Effect Sizes in This Research Area** has been provided:")}`
 
 ```{r echo = FALSE, comment = NA}
@@ -261,7 +275,7 @@ if(code_summary_decision != ""){
 }
 ```
 
-`r if(params$heuristic == "yes"){paste("The sample size was not determine in relation to a specific inferentical goal, but based on heuristics, about which the following information has been provided:")}`
+`r if(params$heuristic == "yes"){paste("The sample size was not determined in relation to a specific inferential goal, but based on heuristics, about which the following information has been provided:")}`
 
 ```{r echo = FALSE, comment = NA}
 if(params$heuristic == "yes" && params$heuristic_details != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$heuristics_details))}
@@ -289,34 +303,60 @@ if(params$expected_effect_from_meta == "yes") {
     }
 ``` 
 
-and given `r if(is.na(params$sesoi_effect_value) == FALSE){paste0("a smallest effect size of interest size of ", params$sesoi_effect_metric, " = ", params$sesoi_effect_value,",")}` `r if(is.na(params$statistically_detectable_effect_value) == FALSE){paste0("a minimal statistically detectable effect of ", params$statistically_detectable_effect_metric, " = ", params$statistically_detectable_effect_value,",")}` `r if(params$expected_effect_from_meta == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$expected_effect_from_study == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$distribution_effect != ""){paste0("and a distribution of effect sizes in the literature as described below:")}`
+and given `r if(is.na(params$sesoi_effect_value) == FALSE){paste0("a smallest effect size of interest size of ", params$sesoi_effect_metric, " = ", params$sesoi_effect_value,",")}` `r if(is.na(params$statistically_detectable_effect_value) == FALSE){paste0("a minimal statistically detectable effect of ", params$statistically_detectable_effect_metric, " = ", params$statistically_detectable_effect_value,",")}` `r if(params$expected_effect_from_meta == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$expected_effect_from_study == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$width_effect_estimate != ""){paste0("an evaluation of the expected width of a confidence interval as described below:")}`
+```{r echo = FALSE, comment = NA}
+if(params$width_effect_estimate != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$width_effect_estimate))}
+```
+
+`r if(params$width_effect_estimate != ""){paste0("an evaluation of effects one has sufficient power to detect based on a sensitivity power analysis as described below:")}`
+```{r echo = FALSE, comment = NA}
+if(params$sensitivity_power != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$sensitivity_power))}
+```
+
+`r if(params$distribution_effect != ""){paste0("and a distribution of effect sizes in the literature as described below:")}`
+
 ```{r echo = FALSE, comment = NA}
 if(params$distribution_effect != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$distribution_effect))}
 ```
 
 ```{r echo = FALSE}
 
+if(params$meta_analysis == "yes") {
+    inferential_goal_final_meta <- paste0("given the inferential goal is to collect data for a future meta-analysis, ")
+} else if (params$meta_analysis == "no") {
+      inferential_goal_final_meta <- ""
+    }
 if(params$power_goal == "yes") {
-    inferential_goal_final_summary <- paste0("based on a ", params$power_type, " with an alpha level of ", params$alpha_level, power_desired)
-    } else if (
-      params$estimate == "yes") {
-      inferential_goal_final_summary <- paste0("to estimate parameters with a desired accuracy ", params$desired_accuracy, " ", params$estimate_metric, assurance)
-    } else if (
-      params$decision == "yes") {
-      inferential_goal_final_summary <- paste0("to make a decision based on the judgment that a Type I error is ", params$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", params$alpha_level, ", and the desired power is ", params$power)
-    } else if (
-      params$heuristic == "yes") {
-      inferential_goal_final_summary <- paste0("was not specified, but a heuristic was used instead")
-    } else if (
-      params$justification == "yes") {
-      inferential_goal_final_summary <- paste0("was not specified, and no justification for the sample size was provided")
+    inferential_goal_final_power <- paste0("given the inferential goal based on a ", params$power_type, " with an alpha level of ", params$alpha_level, power_desired,", ")
+} else if (params$power_goal == "no") {
+      inferential_goal_final_power <- ""
+    } 
+if (params$estimate == "yes") {
+      inferential_goal_final_estimate <- paste0("given the inferential goal to estimate parameters with a desired accuracy ", params$desired_accuracy, " ", estimate_metric,", ")
+} else if (params$estimate == "no") {
+      inferential_goal_final_estimate <- ""
+    }
+if (params$decision == "yes") {
+      inferential_goal_final_decision <- paste0("given the inferential goal to make a decision based on the judgment that a Type I error is ", params$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", params$alpha_level, ", and the desired power is ", params$power,", ")
+} else if (params$decision == "no") {
+      inferential_goal_final_decision <- ""
+    }
+if (params$heuristic == "yes") {
+      inferential_goal_final_heuristic <- paste0("given the inferential goal was not specified, but a heuristic was used instead, ")
+} else if (params$heuristic == "no") {
+      inferential_goal_final_heuristic <- ""
+    }
+if (params$justification == "yes") {
+      inferential_goal_final_justification <- paste0("given the inferential goal was not specified, and no justification for the sample size was provided, ")
+} else if (params$justification == "no") {
+      inferential_goal_final_justification <- ""
     }
 
 ```
 
-and given the inferential goal `r paste(inferential_goal_final_summary)`,
+and `r paste(inferential_goal_final_power)``r paste(inferential_goal_final_estimate)``r paste(inferential_goal_final_decision)``r paste(inferential_goal_final_heuristic)``r paste(inferential_goal_final_justification)``r paste(inferential_goal_final_meta)`
 
-the sample size in the planned study consists a total of `r params$participants` participants, each contributing `r params$observations` observations. 
+the **sample size** in the planned study will consist a total of `r params$participants` participants, each contributing `r params$observations` observations. 
 
 The following additional details about the sample size were provided: 
 

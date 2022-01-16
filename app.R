@@ -176,6 +176,20 @@ ui <- dashboardPage(
           )),
           textAreaInput("expected_effect", "Add any justifications for the expected effect size, including any code used to compute the value. If the expected effect size from a meta-analysis or previous study is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.  Then add all information required to justify the effect size of interest (e.g., proportion of variance explained, intraclass correlation coeffients, etc.).", rows = 15, "")
         ),
+        # Width of the Confidence Interval
+        box(
+          collapsible = TRUE, collapsed = TRUE, title = "Width of the Confidence Interval", solidHeader = TRUE, status = "primary", width = 12,
+          h4("If a researcher can estimate the standard deviation of the observations that will be collected, it is possible to compute an a-priori estimate of the width of the 95% confidence interval around an effect size. What is the informational value of estimating effects with this accuracy? Which effect sizes can be expected to be rejected, and why is it interesting for peers?"), actionButton("modal_width_confidence_interval", "?"),
+          textAreaInput("width_effect_estimate", rows = 5, "")
+        ),
+        # Effect sizes high sensitivity
+        box(
+          collapsible = TRUE, collapsed = TRUE, title = "Sensitivity Power Analysis", solidHeader = TRUE, status = "primary", width = 12,
+          h4("Across a range of possible effect sizes, which effects does a design have sufficient power to detect when performing a hypothesis test?"), actionButton("modal_sensitivity_power", "?"),
+          textAreaInput("sensitivity_power", rows = 5, "")
+        ),
+        
+        # Distribution of Effect Sizes
         box(
           collapsible = TRUE, collapsed = TRUE, title = "Distribution of Effect Sizes", solidHeader = TRUE, status = "primary", width = 12, 
           h4("What is the distribution of effect sizes in this research area? Add a citation to a meta-meta-analysis, where possible."),
@@ -365,12 +379,20 @@ Output:	Noncentrality parameter δ	=	3.8710464
           textAreaInput("participants_details", NULL, rows = 5)),
       HTML("<h4>Given the following resource constraints:</h4>"),
         textOutput("final_summary_text_1", container = tags$h4),
-        HTML("<h4>Given the following effects of interest:</h4>"),
+        HTML("<h4>Given the following effect(s) of interest:</h4>"),
         textOutput("final_summary_text_2", container = tags$h4),
         textOutput("final_summary_text_3", container = tags$h4),
         textOutput("final_summary_text_4", container = tags$h4),
-        HTML("<h4>Given the following inferential goal:</h4>"),
         textOutput("final_summary_text_5", container = tags$h4),
+        textOutput("final_summary_text_6", container = tags$h4),
+        textOutput("final_summary_text_7", container = tags$h4),
+        textOutput("final_summary_text_8", container = tags$h4),
+      HTML("<h4>Given the following inferential goal(s):</h4>"),
+        textOutput("final_summary_text_9", container = tags$h4),
+        textOutput("final_summary_text_10", container = tags$h4),
+        textOutput("final_summary_text_11", container = tags$h4),
+        textOutput("final_summary_text_12", container = tags$h4),
+        textOutput("final_summary_text_13", container = tags$h4),
       HTML("<h4>Please explain what the the informational value of the sample size that will be collected is, given any resource constraints, the effects of interest, and the inferential goal.</h4>"),
         box(
           collapsible = FALSE, title = "Informational Value of the Study", solidHeader = TRUE, status = "primary", width = 12, 
@@ -473,6 +495,29 @@ server <- function(input, output, session) {
       footer = NULL
     ))
   })
+
+  observeEvent(input$modal_width_confidence_interval, {
+    showModal(modalDialog(
+      title = "Evaluation of the Expected Width of the Confidence Interval",
+      HTML("If a researcher can estimate the standard deviation of the observations that will be collected, it is possible to compute an a-priori estimate of the width of the 95% confidence interval around an effect size. The width of this expected interval can be used to evaluate whether the estimate will be accurate enough to be informative."),
+      HTML("<br><br>One useful way of interpreting the width of the confidence interval is based on the effects you would be able to reject if the true effect size is 0. In other words, if there is no effect, which effects would you have been able to reject given the collected data, and which effect sizes would not be rejected, if there was no effect?"),
+      HTML("<br><br>This approach to evaluating effect sizes of interest corresponds to the inferential goal of accurate effect sizes, and one should complete this section in the inferential goal tab if information is provided here. In addition, it is often useful to provide information on expected effect sizes in a specific research area in the field below, as the accuracy should be high enough to exclude some effects that can be expected in a research area."),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+  
+  observeEvent(input$modal_sensitivity_power, {
+    showModal(modalDialog(
+      title = "Evaluation of the Effect Sizes that can be Detected with High Power",
+      HTML("A sensitivity power analysis fixes the sample size, desired power, and alpha level, and answers the question which effect size a study could detect with a desired power. A sensitivity power analysis is therefore performed when the sample size is already known. Sometimes data has already been collected to answer a different research question, or the data is retrieved from an existing database, and you want to performa sensitivity power analysis"),
+      HTML("<br><br>Other times, you might not have carefully considered the sample size when you initially collected the data, and want to reflect on the statistical power of the study for (ranges of) effect sizes of interest when analyzing the results."),
+      HTML("<br><br>Finally, it is possible that the sample size will be collected in the future, but you know that due to resource constraints the maximum sample size you can collect is limited, and you want to reflect on whether the study has sufficient power for effects that you consider plausible and interesting (such as the smallest effect size of interest, or the effect size that is expected)"),      
+      HTML("<br><br>If effect sizes of interest are evaluated for a sensitivity power analysis, it is worthwhile to (if possible) also complete the sections on an expected effect size above, the minimum statistically detectable effect size, and effect sizes that are commonlly observed in this specific literature). Fill in the 'Statistical Power' section on the Inferential Goals tab (and choose 'sensitivity power analysis')"),      
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
   
   observeEvent(input$modal_effect_of_interest_previous, {
     showModal(modalDialog(
@@ -523,6 +568,8 @@ server <- function(input, output, session) {
   observeEvent(input$describe_similarity_study, {values$describe_similarity_study <- input$describe_similarity_study})
   observeEvent(input$describe_uncertainty_study, {values$describe_uncertainty_study <- input$describe_uncertainty_study})
   observeEvent(input$describe_bias_study, {values$describe_bias_study <- input$describe_bias_study})
+  observeEvent(input$width_effect_estimate, {values$width_effect_estimate <- input$width_effect_estimate})
+  observeEvent(input$sensitivity_power, {values$sensitivity_power <- input$sensitivity_power})
   observeEvent(input$distribution_effect, {values$distribution_effect <- input$distribution_effect})
   observeEvent(input$meta_analysis, {values$meta_analysis <- input$meta_analysis})
   observeEvent(input$decision, {values$decision <- input$decision})
@@ -640,12 +687,13 @@ server <- function(input, output, session) {
   
   final_summary_text_1 <- reactive(input$describe_constraints)
   final_summary_text_2 <- reactive(if(is.na(input$sesoi_effect_value) == FALSE){paste0("A smallest effect size of interest size of ", input$sesoi_effect_metric, " = ", input$sesoi_effect_value,".")})
-    final_summary_text_3 <- reactive(if(is.na(input$statistically_detectable_effect_value) == FALSE){paste0("A minimal statistically detectable effect of ", input$statistically_detectable_effect_metric, " = ", input$statistically_detectable_effect_value, ".")})
-    final_summary_text_3 <- reactive(if(input$expected_effect_from_meta == "yes") {paste0("An expected effect size of ", input$expected_effect_metric_meta, " = ", input$expected_effect_value_meta,"")
-    })
-    final_summary_text_4 <- reactive(if(input$expected_effect_from_study == "yes") {paste0("An expected effect size of ", input$expected_effect_metric_study, " = ", input$expected_effect_value_study,"")
-    })
-    
+  final_summary_text_3 <- reactive(if(is.na(input$statistically_detectable_effect_value) == FALSE){paste0("A minimal statistically detectable effect of ", input$statistically_detectable_effect_metric, " = ", input$statistically_detectable_effect_value, ".")})
+  final_summary_text_4 <- reactive(if(input$expected_effect_from_meta == "yes") {paste0("An expected effect size of ", input$expected_effect_metric_meta, " = ", input$expected_effect_value_meta,"")})
+  final_summary_text_5 <- reactive(if(input$expected_effect_from_study == "yes") {paste0("An expected effect size of ", input$expected_effect_metric_study, " = ", input$expected_effect_value_study,"")})
+  final_summary_text_6 <- reactive(if(input$width_effect_estimate != "") {paste0("An expected width of the effect size estimate described as follows: ", input$width_effect_estimate)})
+  final_summary_text_7 <- reactive(if(input$sensitivity_power != "") {paste0("A sensitivity power analysis described as follows: ", input$sensitivity_power)})
+  final_summary_text_8 <- reactive(if(input$distribution_effect != "") {paste0("An expected distribution of effect sizes describes as follows: ", input$distribution_effect)})
+  
     power_desired <- reactive(
     if(input$power_type == "a-priori power analysis"){
       paste0(", and the desired power is ", input$power,".")
@@ -658,28 +706,41 @@ server <- function(input, output, session) {
     })
     
     
-    final_summary_text_5 <- reactive(
+    final_summary_text_9 <- reactive(
     if(input$power_goal == "yes") {
-      inferential_goal_final_summary <- paste0("The inferential goal is based on a ", input$power_type, " with an alpha level of ", input$alpha_level, power_desired())
-    } else if (
-      input$estimate == "yes") {
-      inferential_goal_final_summary <- paste0("The inferentional goal is to estimate parameters with a desired accuracy ", input$desired_accuracy, " ", input$estimate_metric, ".")
-    } else if (
-      input$decision == "yes") {
-      inferential_goal_final_summary <- paste0("The inferentional goal is to make a decision based on the judgment that a Type I error is ", input$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", input$alpha_level, ", and the desired power is ", input$power)
-    } else if (
-      params$heuristic == "yes") {
-      inferential_goal_final_summary <- paste0("was not specified, but a heuristic was used instead")
-    } else if (
-      params$justification == "yes") {
-      inferential_goal_final_summary <- paste0("was not specified, and no justification for the sample size was provided")
+      inferential_goal_final_power <- paste0("The inferential goal is based on a ", input$power_type, " with an alpha level of ", input$alpha_level, power_desired())
     })
+    final_summary_text_10 <- reactive(
+      if(input$estimate == "yes") {
+      inferential_goal_final_estimate <- paste0("The inferentional goal is to estimate parameters with a desired accuracy based on a ", input$desired_accuracy, "% ", input$interval_metric, ".")
+    })
+    final_summary_text_11 <- reactive(
+      if (input$decision == "yes") {
+      inferential_goal_final_decision <- paste0("The inferentional goal is to make a decision based on the judgment that a Type I error is ", input$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", input$alpha_level, ", and the desired power is ", input$power)
+    })
+    final_summary_text_12 <- reactive(
+      if (input$heuristic == "yes") {
+      inferential_goal_final_heuristic <- paste0("The inferentional goal was not specified, but a heuristic was used instead, as described: ", input$heuristic_details)
+    })
+    final_summary_text_13 <- reactive(
+      if (input$justification == "yes") {
+      inferential_goal_final_justification <- paste0("The inferentional goal was not specified, and no justification for the sample size was provided, as described: ", input$no_justification_details)
+    })
+
     
     output$final_summary_text_1 <- renderText(final_summary_text_1())
     output$final_summary_text_2 <- renderText(final_summary_text_2())
     output$final_summary_text_3 <- renderText(final_summary_text_3())
     output$final_summary_text_4 <- renderText(final_summary_text_4())
     output$final_summary_text_5 <- renderText(final_summary_text_5())
+    output$final_summary_text_6 <- renderText(final_summary_text_6())
+    output$final_summary_text_7 <- renderText(final_summary_text_7())
+    output$final_summary_text_8 <- renderText(final_summary_text_8())
+    output$final_summary_text_9 <- renderText(final_summary_text_9())
+    output$final_summary_text_10 <- renderText(final_summary_text_10())
+    output$final_summary_text_11 <- renderText(final_summary_text_11())
+    output$final_summary_text_12 <- renderText(final_summary_text_12())
+    output$final_summary_text_13 <- renderText(final_summary_text_13())
     
     
   ###############################################################################
@@ -736,6 +797,8 @@ server <- function(input, output, session) {
                      power_goal = values$power_goal,
                      power_type = as.character(values$power_type),
                      power_analysis_code = values$power_analysis_code,
+                     width_effect_estimate = values$width_effect_estimate,
+                     sensitivity_power = values$sensitivity_power,
                      heuristic = values$heuristic,
                      heuristic_details = values$heuristic_details,
                      justification = values$justification,
