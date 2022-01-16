@@ -393,6 +393,7 @@ Output:	Noncentrality parameter δ	=	3.8710464
         textOutput("final_summary_text_11", container = tags$h4),
         textOutput("final_summary_text_12", container = tags$h4),
         textOutput("final_summary_text_13", container = tags$h4),
+        textOutput("final_summary_text_14", container = tags$h4),
       HTML("<h4>Please explain what the the informational value of the sample size that will be collected is, given any resource constraints, the effects of interest, and the inferential goal.</h4>"),
         box(
           collapsible = FALSE, title = "Informational Value of the Study", solidHeader = TRUE, status = "primary", width = 12, 
@@ -572,6 +573,7 @@ server <- function(input, output, session) {
   observeEvent(input$sensitivity_power, {values$sensitivity_power <- input$sensitivity_power})
   observeEvent(input$distribution_effect, {values$distribution_effect <- input$distribution_effect})
   observeEvent(input$meta_analysis, {values$meta_analysis <- input$meta_analysis})
+  observeEvent(input$will_meta_be_performed, {values$will_meta_be_performed <- input$will_meta_be_performed})
   observeEvent(input$decision, {values$decision <- input$decision})
   observeEvent(input$relative_cost, {values$relative_cost <- input$relative_cost})
   observeEvent(input$alpha_level, {values$alpha_level <- input$alpha_level})
@@ -726,7 +728,11 @@ server <- function(input, output, session) {
       if (input$justification == "yes") {
       inferential_goal_final_justification <- paste0("The inferentional goal was not specified, and no justification for the sample size was provided, as described: ", input$no_justification_details)
     })
-
+    final_summary_text_14 <- reactive(
+      if (input$meta_analysis == "yes") {
+        inferential_goal_final_meta <- paste0("The goal of the study is to collect data for a future meta-analysis")
+      })
+    
     
     output$final_summary_text_1 <- renderText(final_summary_text_1())
     output$final_summary_text_2 <- renderText(final_summary_text_2())
@@ -741,6 +747,7 @@ server <- function(input, output, session) {
     output$final_summary_text_11 <- renderText(final_summary_text_11())
     output$final_summary_text_12 <- renderText(final_summary_text_12())
     output$final_summary_text_13 <- renderText(final_summary_text_13())
+    output$final_summary_text_14 <- renderText(final_summary_text_14())
     
     
   ###############################################################################
@@ -781,6 +788,7 @@ server <- function(input, output, session) {
                      describe_bias_study = values$describe_bias_study,
                      distribution_effect = values$distribution_effect,
                      meta_analysis = values$meta_analysis,
+                     will_meta_be_performed = values$will_meta_be_performed,
                      decision = values$decision,
                      relative_cost = values$relative_cost,
                      relative_cost_code = values$relative_cost_code,

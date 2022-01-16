@@ -32,6 +32,7 @@ params:
   sensitivity_power: NA,
   distribution_effect: NA,
   meta_analysis: NA,
+  will_meta_be_performed: NA,
   decision: NA,
   relative_cost: NA,
   alpha_level: NA,
@@ -189,6 +190,13 @@ if(params$distribution_effect != ""){cat(gsub(pattern = "\n", replacement = "  \
 
 # C: Inferential Goal
 
+`r if(params$meta_analysis == "yes"){paste("The goal of the study is to collect data for a **future meta-analysis**. The following information about the probability that a future meta-analysis will be performed has been provided:")}`
+
+`r if(params$meta_analysis == "yes"){paste(params$will_meta_be_performed)}`
+
+`r if(params$meta_analysis == "yes" && params$will_meta_be_performed == ""){paste("*No further details about the probability that a meta-analysis will be performed were provided*")}`
+
+
 ```{r echo = FALSE}
 
 power_metric_1 <- ifelse(params$effect_metric_1 != "Other. Specify in the Sample Size Computation field", params$effect_metric_1, "")
@@ -277,11 +285,15 @@ if(code_summary_decision != ""){
 
 `r if(params$heuristic == "yes"){paste("The sample size was not determined in relation to a specific inferential goal, but based on heuristics, about which the following information has been provided:")}`
 
-```{r echo = FALSE, comment = NA}
-if(params$heuristic == "yes" && params$heuristic_details != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$heuristics_details))}
-```
+`r if(params$heuristic == "yes" && params$heuristic_details != ""){paste(params$heuristic_details)}`
 
 `r if(params$heuristic == "yes" && params$heuristic_details == ""){paste("*No further details or justifications for chosen values were provided*")}`
+
+`r if(params$justification == "yes"){paste("The sample size was not determined in relation to a specific inferential goal, and no justification was given, about which the following information has been provided:")}`
+
+`r if(params$justification == "yes" && params$no_justification_details != ""){paste(params$no_justification_details)}`
+
+`r if(params$justification == "yes" && params$no_justification_details == ""){paste("*No further details were provided*")}`
 
 # D: Informational Value of the Study
 
@@ -304,11 +316,13 @@ if(params$expected_effect_from_meta == "yes") {
 ``` 
 
 and given `r if(is.na(params$sesoi_effect_value) == FALSE){paste0("a smallest effect size of interest size of ", params$sesoi_effect_metric, " = ", params$sesoi_effect_value,",")}` `r if(is.na(params$statistically_detectable_effect_value) == FALSE){paste0("a minimal statistically detectable effect of ", params$statistically_detectable_effect_metric, " = ", params$statistically_detectable_effect_value,",")}` `r if(params$expected_effect_from_meta == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$expected_effect_from_study == "yes"){paste0(expected_effect_final_summary,",")}` `r if(params$width_effect_estimate != ""){paste0("an evaluation of the expected width of a confidence interval as described below:")}`
+
 ```{r echo = FALSE, comment = NA}
 if(params$width_effect_estimate != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$width_effect_estimate))}
 ```
 
-`r if(params$width_effect_estimate != ""){paste0("an evaluation of effects one has sufficient power to detect based on a sensitivity power analysis as described below:")}`
+`r if(params$sensitivity_power != ""){paste0("an evaluation of effects one has sufficient power to detect based on a sensitivity power analysis as described below:")}`
+
 ```{r echo = FALSE, comment = NA}
 if(params$sensitivity_power != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$sensitivity_power))}
 ```
