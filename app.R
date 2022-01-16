@@ -31,10 +31,12 @@ ui <- dashboardPage(
     tabItems(
       tabItem(
         tabName = "about",
-        h4("This Shiny app accompanies the paper 'Sample Size Justification' by Daniël Lakens. You can download the pre-print of this article at ", a("PsyArXiV", href = "https://psyarxiv.com/9d3yf/"), ". You can help to improve this app by providing feedback or suggest additions by filling out ", a("this feedback form", href = "https://docs.google.com/forms/d/e/1FAIpQLSdWAtBdv2VnlIWMwSeHK9syZnAw5P2Q9yJs_9hvFy0j9daSYQ/viewform?usp=sf_link", target="_blank"),". Note that this app will not store the information you enter if you close or refresh you browser. You might want to write down answers in a local text file first. For a completed example, see", a("here", href ="https://shiny.ieis.tue.nl/examples/example_vantveer_lakens.html", target="_blank"),".",
-           HTML("<br><br>The main goal of this app and the accompanying paper is to guide you through an evaluation of the <b>informational value</b> of a planned study. After filling out this form you can download a report of your sample size justification."),
-           HTML("<br><br>The informational value of a study depends on the <b>inferential goal</b>, which could be testing a hypothesis, obtaining an accurate estimate, or seeing what you can learn from all the data you have the resources to collect."),
-           HTML("<h4><ul><li>It is possible that your resource constraints allow you to perform a study that has: 
+        h4("This Shiny app accompanies the paper 'Sample Size Justification' by Daniël Lakens. You can download the pre-print of this article at ", a("PsyArXiV", href = "https://psyarxiv.com/9d3yf/"), " and any sections in this online form that are unclear are explained in the paper. You can help to improve this app by providing feedback or suggest additions by filling out ", a("this feedback form", href = "https://docs.google.com/forms/d/e/1FAIpQLSdWAtBdv2VnlIWMwSeHK9syZnAw5P2Q9yJs_9hvFy0j9daSYQ/viewform?usp=sf_link", target="_blank"),". Note that this app will not store the information you enter if you close or refresh you browser. You might want to write down answers in a local text file first. For a completed example, see", a("here", href ="https://shiny.ieis.tue.nl/examples/example_vantveer_lakens.html", target="_blank"),".",
+           HTML("<br><br>The main goal of this app and the accompanying paper is to guide you through an evaluation of the <b>informational value</b> of a planned study. After filling out this form you can download a report of your sample size justification.<br><br>"),
+           box(
+             collapsible = TRUE, collapsed = TRUE, title = "More Info on the Informational Value of Studies.", solidHeader = TRUE, status = "primary", width = 12, 
+             HTML("<br><br>The informational value of a study depends on the <b>inferential goal</b>, which could be testing a hypothesis, obtaining an accurate estimate, or seeing what you can learn from all the data you have the resources to collect."),
+             HTML("<h4><ul><li>It is possible that your resource constraints allow you to perform a study that has: 
           <ul><li> a desired <b>statistical power</b>, or </ul></li> 
           <ul><li>  a desired <b>accuracy of the estimated effect</b></ul></li> 
           and your resource constraints are not the primary reason to collect a specific sample size (even though resource constraints are always a secondary reason to collect a certain sample size, as without resource constraints, one would for example choose a very low alpha level and design a study that has incredibly high statistical power). In these cases, you would:
@@ -46,9 +48,7 @@ ui <- dashboardPage(
           <ul><li> If you still want to perform a hypothesis test, perform a <b>sensitivity power analysis</b>, justify the sample size based on the information it will provide about the <b>expected effect size</b> or other effect sizes of interest, such as effects previously observed in the literature. 
           If you plan to perform a hypothesis test, examine if the <b>minimal statistically detectable effect</b> is large enough to warrant a hypothesis test, and evaluate whether the Type 1 error rate and the Type II error rate make it possible to draw useful conclusions based on the <i>p</i>-value, or not.</ul></li>
           <ul><li>If you want to estimate an effect size, interpret the <b>width of the confidence interval around the estimate</b>, and specify what an estimate with this accuracy is useful for.</ul></li>
-          </ul></li></h4>
-          
-          "),
+          </ul></li></h4>")),
            actionButton('jump_to_a', 'Continue to the Sample Description Tab'),
         )
       ),
@@ -58,11 +58,11 @@ ui <- dashboardPage(
         h2("Describe Your Population"),
         box(
           collapsible = TRUE, title = "Describe the population and its size", solidHeader = TRUE, status = "primary", width = 12, 
-          h4("Describe the population you are sampling from, including its estimated size when the population is finite. Indicate methods of recruitment, selection and inclusion/exclusion criteria, details of any stratification sampling used, planned participant characteristics, and compensation amount and method. (Overlaps with M4 in the ", a("PQRP checklist", href = "https://docs.google.com/spreadsheets/d/1vlp5GN-HXrtrjCdjE28f_3tT6RiwhQO2vVeOZGOaFsQ/edit#gid=0", target="_blank"),")."),
+          h4("Describe the population you are sampling from.", actionButton("modal_describe_population", "?")), 
           textAreaInput("population", rows = 5, "")
         ),
         box(
-          collapsible = TRUE, title = "Can you collect data from the entire population?", solidHeader = TRUE, status = "primary", width = 12, 
+          collapsible = TRUE, title = "Can you collect data from the entire population?", solidHeader = TRUE, status = "primary", width = 12, actionButton("model_entire_population", "?"),
           selectInput(
           "collect_entire_population", "",
           c("no", "yes"))
@@ -71,7 +71,7 @@ ui <- dashboardPage(
           id = "describe_constraints_q",
           box(
             collapsible = TRUE, title = "Describe your resource constraints.", solidHeader = TRUE, status = "primary", width = 12, 
-            h4(HTML("Describe your <b>resource constraints</b> (e.g., time and money), and how these limit the <b>maximum sample size</b> you are willing and able to collect. Note that in the subsequent steps, you might provide justifications to collect a smaller sample size than this maximum. It is also possible that the maximum sample size based on resource constraints is the main justification for the sample size (i.e., a <b>resource constraints justification</b>). This happens when, for example, an a-priori power analysis for the smallest effect size of interest yields a required sample size that is larger than the resources you have available. This is common, as there are almost always resource constraints, but it requires a careful evaluation of the informational value of the study. ")),
+            h4(HTML("Describe your <b>resource constraints</b> (e.g., time and money), and how these limit the <b>maximum sample size</b> you are willing and able to collect."), actionButton("modal_resource_constraints", "?")),
               textAreaInput("describe_constraints", NULL, rows = 5,
             placeholder = ""
           ),
@@ -84,17 +84,12 @@ ui <- dashboardPage(
         tabName = "part_b",
         h2("Which Effect Sizes are of Interest?"),
         h4(HTML("<br><br>A shared feature of the different inferential goals (see Part C) is the question which effect sizes a researcher considers meaningful to learn about. 
-        This implies that researchers need to evaluate which effect sizes they consider interesting. These evaluations rely on a combination of statistical properties and domain knowledge."),
-        HTML("<br><br>If your inferential goal is a <b>statistical hypothesis test</b>, and you plan to perform an <b>a-priori power analysis</b>, best practice is to design a study well-powered for a <b>smallest effect size of interest</b>. 
-           Alternatively, design a study that is well powered for an <b>expected effect size</b> (either based on related studies in the literature, or other sources of expectations)."),
-        HTML("<br><br>If your inferential goal is an <b>accurate estimate</b>, provide an answer to the <b>expected effect size</b> (either based on a meta-analysis, related studies in the literature, or other sources of expectations)."),
-        HTML("<br><br>If your sample size justification is based on <b>resource constraints</b>, compute the <b>minimal statistically detectable effect</b> given the sample size you can collect. You can also specify the smallest effect size of interest, or an expected effect size, and examine the power for these effects in a sensitivty power analysis. If this is not possible, a last resort is to consider the <b>distribution of effects in a specific literature</b>, to evaluate the likelihood that the data will provide information about the presence of absence of effects of the size one typically encounters in a specific literature."),
-        HTML("<br><br>You can leave any or all of the fields below empty.")),
-      
+        This implies that researchers need to evaluate which effect sizes they consider interesting. First, it is useful to consider three effect sizes when determining the sample size. The first is the smallest effect size a researcher is interested in, the second is the smallest effect size that can be statistically significant (only in studies where a significance test will be performed), and the third is the effect size that is expected.
+        Below, you can provide details about effect sizes of interest (but you can also leave all fields empty)."), actionButton("model_effects_of_interest", "?")),
         box(
-          collapsible = TRUE, title = "Smallest Effect Size of Interest", solidHeader = TRUE, status = "primary", width = 12, 
+          collapsible = TRUE, collapsed = TRUE, title = "Smallest Effect Size of Interest", solidHeader = TRUE, status = "primary", width = 12, 
           h4("What is the smallest effect size of interest (specify the metric and the value)? What is the justification to consider this the smallest effect size of interest? For example, is this the smallest effect that would be practically relevant, theoretically predicted, or that would reject a previously observed effect using the Small Telescopes approach?"),
-          h4("For examples, see", a("here", href ="https://shiny.ieis.tue.nl/examples/SESOI_examples.html", target="_blank"), "."),
+          h4("For examples, see", a("here", href ="https://shiny.ieis.tue.nl/examples/SESOI_examples.html", target="_blank"), ".", actionButton("model_sesoi", "?")),
           numericInput("sesoi_effect_value", "What is the value of the smallest effect size of interest?", value = "", step = 0.01),
           selectInput(
             "sesoi_effect_metric", "What is the effect size metric used above?",
@@ -103,7 +98,7 @@ ui <- dashboardPage(
           textAreaInput("effect_of_interest", "Add any justifications for the effect size above, including any code used to compute the value. If the smallest effect of interest is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field. Then add all information required to justify the effect size of interest (e.g., proportion of variance explained, intraclass correlation coeffients, etc.).", rows = 5, "")
         ),
         box(
-          collapsible = TRUE, title = "Minimal Statistically Detectable Effect", solidHeader = TRUE, status = "primary", width = 12, 
+          collapsible = TRUE, collapsed = TRUE, title = "Minimal Statistically Detectable Effect", solidHeader = TRUE, status = "primary", width = 12, 
           h4("What is the minimal statistically detectable effect? How was the minimal statistically detectable effect computed (preferably in code)?"),
           numericInput("statistically_detectable_effect_value", "What is the value of the minimal statistically detectable effect size?", value = "", step = 0.01),
           selectInput(
@@ -113,7 +108,7 @@ ui <- dashboardPage(
             textAreaInput("minimal_detectable", "Add any justifications for the effect size above, including any code used to compute the value. If the minimal statistically detectable effect is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.  Then add all information required to justify the effect size of interest (e.g., proportion of variance explained, intraclass correlation coeffients, etc.).", rows = 5, "")
         ),
         box(
-          collapsible = TRUE, title = "Expected Effect Size", solidHeader = TRUE, status = "primary", width = 12, 
+          collapsible = TRUE, collapsed = TRUE, title = "Expected Effect Size", solidHeader = TRUE, status = "primary", width = 12, 
           h4("What is the expected effect size, and why?"),
           h4("What is the source of the expected effect size? E.g., a meta-analysis, a previous study, or a subjective prior belief. If applicable, cite the source, and add a direct quote or table number that contains the effect size estimate."),
           h4("Can the effect size from the source be expected to generalize to the planned study? For a meta-analyses with large heterogeneity, what is the effect size in the most heterogenous subset?"),
@@ -121,7 +116,7 @@ ui <- dashboardPage(
           h4("Below, choose either the options that the expected effect size is based on a meta-analysis, or choose the option that the expected effect size is based on a previous study, or specify what the source of the expectation was in the main text field."),
           # Expected effect based on meta-analysis?
           box(
-            collapsible = TRUE, title = "Is the expected effect size based on a meta-analysis?", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = TRUE, title = "Is the expected effect size based on a meta-analysis?", solidHeader = TRUE, status = "primary", width = 12, actionButton("modal_effect_of_interest_meta", "?"),
             selectInput(
               "expected_effect_from_meta", "",
               c("no", "yes"))
@@ -151,7 +146,7 @@ ui <- dashboardPage(
           )),
           # Expected effect based on single study?
           box(
-            collapsible = TRUE, title = "Is the expected effect size based on a previous study?", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = TRUE, title = "Is the expected effect size based on a previous study?", solidHeader = TRUE, status = "primary", width = 12, actionButton("modal_effect_of_interest_previous", "?"),
             selectInput(
               "expected_effect_from_study", "",
               c("no", "yes"))
@@ -182,7 +177,7 @@ ui <- dashboardPage(
           textAreaInput("expected_effect", "Add any justifications for the expected effect size, including any code used to compute the value. If the expected effect size from a meta-analysis or previous study is not based on a simple effect, but on a more complex data pattern, leave the 'value' field empty, and choose 'Other. Specify in the field below' in the 'metric' field.  Then add all information required to justify the effect size of interest (e.g., proportion of variance explained, intraclass correlation coeffients, etc.).", rows = 15, "")
         ),
         box(
-          collapsible = TRUE, title = "Distribution of Effect Sizes", solidHeader = TRUE, status = "primary", width = 12, 
+          collapsible = TRUE, collapsed = TRUE, title = "Distribution of Effect Sizes", solidHeader = TRUE, status = "primary", width = 12, 
           h4("What is the distribution of effect sizes in this research area? Add a citation to a meta-meta-analysis, where possible."),
           textAreaInput("distribution_effect", rows = 5, "")
         ),
@@ -192,10 +187,10 @@ ui <- dashboardPage(
       tabItem(
         tabName = "part_c",
         h2("Specify the Inferential Goal."),
-        h4("By collecting a certain amount of data, researchers aim to reach an inferential goal. Therefore, "),
+        h4("By collecting a certain amount of data, researchers aim to reach an inferential goal. Common inferential goals are to make a decision, perform a statistical test, or measure an effect with a desired accuracy. It is also possible that data collection has no specified inferential goal, either because data is only collected to provide input for a future meta-analysis, because a sample size is based on heuristics, or because there is no justification for the sample size."),
         box(
-          collapsible = TRUE, title = "B1: Input for Future Meta-Analysis", solidHeader = TRUE, status = "primary", width = 12, 
-          h4("Will this study mainly serve as input for a future meta-analysis (and will no inferences be drawn from this dataset in isolation?"),
+          collapsible = TRUE, collapsed = TRUE, title = "Input for Future Meta-Analysis", solidHeader = TRUE, status = "primary", width = 12, 
+          h4("Will this study mainly serve as input for a future meta-analysis (and will no inferences be drawn from this dataset in isolation?", actionButton("modal_meta", "?")),
           selectInput(
             "meta_analysis", "",
             c("no", "yes")
@@ -203,7 +198,7 @@ ui <- dashboardPage(
         hidden(tags$div(
           id = "meta_q",
           box(
-            collapsible = TRUE, title = "How will the meta-analysis be realized?", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = FALSE, title = "How will the meta-analysis be realized?", solidHeader = TRUE, status = "primary", width = 12, 
             h4("Reflect on the probability that a future meta-analysis will be performed, how you will help to realize such a meta-analysis."),
             textAreaInput("will_meta_be_performed", NULL,
                           rows = 5, label = ""
@@ -212,7 +207,7 @@ ui <- dashboardPage(
         
         # decision section
           box(id = "decision_q",
-            collapsible = TRUE, title = "B2: Decision", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = TRUE, collapsed = TRUE, title = "Decision", solidHeader = TRUE, status = "primary", width = 12, 
             h4("Is there a clear need to make a decision about how to act based on the results of this study?"),
             selectInput(
               "decision", "",
@@ -222,7 +217,7 @@ ui <- dashboardPage(
         hidden(tags$div(
           id = "decision_sub_q",
           box(
-            collapsible = TRUE, title = "Specify cost/benefit considerations", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = FALSE, title = "Specify cost/benefit considerations", solidHeader = TRUE, status = "primary", width = 12, 
             h4("For examples, see", a("here", href ="https://shiny.ieis.tue.nl/examples/decision_examples.html", target="_blank"), "."),
             h4("Specify the parameters of the cost/benefit trade-off used in the power analysis."),
             numericInput("relative_cost", "Relative Cost Type 1 Error vs. Type 2 Error", value = 4),
@@ -246,7 +241,7 @@ Output:	Noncentrality parameter δ	=	3.0740852
         )),
         # estimation section
           box(id = "estimate_q",
-            collapsible = TRUE, title = "B3: Estimation", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = TRUE, collapsed = TRUE, title = "Estimation", solidHeader = TRUE, status = "primary", width = 12, 
             h4("Is your inferential goal to estimate the size of a parameter?"),
             selectInput(
               "estimate", "",
@@ -256,7 +251,7 @@ Output:	Noncentrality parameter δ	=	3.0740852
         hidden(tags$div(
           id = "estimate_sub_q",
           box(
-            collapsible = TRUE, title = "Estimation details.", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = FALSE, title = "Estimation details.", solidHeader = TRUE, status = "primary", width = 12, 
             h4("Specify the parameters related to the desired estimation accuracy."),
             selectInput(
               "interval_metric", "Which type of interval is the decision based on?",
@@ -271,7 +266,7 @@ Output:	Noncentrality parameter δ	=	3.0740852
         )),
         # power section
           box(id = "power_q",
-            collapsible = TRUE, title = "B4: Power", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = TRUE, collapsed = TRUE, title = "Statistical Power", solidHeader = TRUE, status = "primary", width = 12, 
             h4("Is your inferential goal to achieve a desired statistical power for a statistical test?"),
             h4("For examples of sensitivity power analyses, see", a("here", href ="https://shiny.ieis.tue.nl/examples/sensitivity_analysis_examples.html", target="_blank"), "."),
             selectInput(
@@ -282,7 +277,7 @@ Output:	Noncentrality parameter δ	=	3.0740852
         hidden(tags$div(
           id = "power_sub_q",
           box(
-            collapsible = TRUE, title = "Power calculation.", solidHeader = TRUE, status = "primary", width = 12, 
+            collapsible = FALSE, title = "Power calculation.", solidHeader = TRUE, status = "primary", width = 12, 
             h4("Specify the parameters related to the statistical power calculation. If you have multiple hypothesis tests in your study"),
             selectInput(
               "power_type", "What type of power analysis have you performed?",
@@ -315,6 +310,42 @@ Output:	Noncentrality parameter δ	=	3.8710464
 "
             ))
         )),
+        # heuristics section
+        box(id = "heuristics_q",
+            collapsible = TRUE, collapsed = TRUE, title = "Heuristic", solidHeader = TRUE, status = "primary", width = 12, 
+            h4("Is the sample size based on a heuristic?"),
+            selectInput(
+              "heuristic", "",
+              c("no", "yes")
+            )
+        ),
+        hidden(tags$div(
+          id = "heuristic_sub_q",
+          box(
+            collapsible = FALSE, title = "Heuristic details.", solidHeader = TRUE, status = "primary", width = 12, 
+            h4("It is important to know what the logic behind a heuristic is to determine whether the heuristic is valid for a specific situation. Try to identify the source of the heuristic, and describe the logic of the heuristic. In most cases, heuristics are not tied to any specified inferential goal, and therefore there is a risk their use to determine the sample size leads to studies that lack informational value."),
+            textAreaInput("heuristic_details", NULL,
+                          rows = 5, label = "Details about the Heuristic"
+            ))
+        )),
+        # no justification section
+        box(id = "no_justification_q",
+            collapsible = TRUE, collapsed = TRUE, title = "No Justification", solidHeader = TRUE, status = "primary", width = 12, 
+            h4("Is the sample size determined without any justification in mind?"),
+            selectInput(
+              "justification", "",
+              c("no", "yes")
+            )
+        ),
+        hidden(tags$div(
+          id = "no_justification_sub_q",
+          box(
+            collapsible = FALSE, title = "No Justification details.", solidHeader = TRUE, status = "primary", width = 12, 
+            h4("It is useful to distinguish a final category where researchers explicitly state they do not have a justification for their sample size. In those cases, instead of pretending there was a justification for the sample size, honesty requires you to state there is no sample size justification, and evaluate which effect sizes of interest the study could provide information about."),
+            textAreaInput("no_justification_details", NULL,
+                          rows = 5, label = "Details about the lack of a justification."
+            ))
+        )),
         actionButton('jump_to_d', 'Continue to the Informational Value Tab'),
         
       ),
@@ -332,20 +363,20 @@ Output:	Noncentrality parameter δ	=	3.8710464
           collapsible = FALSE, title = "Additional details about the sample size", solidHeader = TRUE, status = "primary", width = 12, 
           h4("Describe the distribution of participants or observations across conditions, how you plan to deal with missing data, or any other information that determines the information this data can provide in relation to the inferential goal."),
           textAreaInput("participants_details", NULL, rows = 5)),
-      HTML("<h4><b>Given the following resource constraints:</b></h4>"),
+      HTML("<h4>Given the following resource constraints:</h4>"),
         textOutput("final_summary_text_1", container = tags$h4),
-        HTML("<h4><b>Given the following effects of interest:</b></h4>"),
+        HTML("<h4>Given the following effects of interest:</h4>"),
         textOutput("final_summary_text_2", container = tags$h4),
         textOutput("final_summary_text_3", container = tags$h4),
         textOutput("final_summary_text_4", container = tags$h4),
-        HTML("<h4><b>Given the following inferential goal:</b></h4>"),
+        HTML("<h4>Given the following inferential goal:</h4>"),
         textOutput("final_summary_text_5", container = tags$h4),
-      HTML("<h4><b>Please explain what the the informational value of the sample size that will be collected is, given any resource constraints, the effects of interest, and the inferential goal.</b></h4>"),
+      HTML("<h4>Please explain what the the informational value of the sample size that will be collected is, given any resource constraints, the effects of interest, and the inferential goal.</h4>"),
         box(
           collapsible = FALSE, title = "Informational Value of the Study", solidHeader = TRUE, status = "primary", width = 12, 
           textAreaInput("informational_value", NULL, rows = 10)),
-      HTML("<br><br><h4><b>You can download a html report of your sample size justification(for example to add it to a preregistration of your study) by clicking the button below.</b></h4>"),
-      downloadButton("report", "Download Report")
+      HTML("<br><br><h4><i>You can download a html report of your sample size justification (for example to add it to a preregistration of your study) by clicking the button below.</i></h4>"),
+      downloadButton("report", "Download Sample Size Justification")
       )
       ))
     )
@@ -353,6 +384,107 @@ Output:	Noncentrality parameter δ	=	3.8710464
 )
 
 server <- function(input, output, session) {
+  
+  observeEvent(input$model_entire_population, {
+    showModal(modalDialog(
+      title = "Collecting the Entire Population",
+      "In some instances, it might be possible to collect data from (almost) the entire population under investigation. For example, researchers might use census data, are able to collect data from all employees at a firm or study a small population of top athletes. Whenever it is possible to measure the entire population, the sample size justification becomes straightforward: the researcher used all the data that is available.",
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+  
+  observeEvent(input$modal_resource_constraints, {
+    showModal(modalDialog(
+      title = "Maximum Sample Size",
+      HTML("Note that in the subsequent steps, you might provide justifications to collect a smaller sample size than this maximum. It is also possible that the maximum sample size based on resource constraints is the main justification for the sample size (i.e., a <b>resource constraints justification</b>). This happens when, for example, an a-priori power analysis for the smallest effect size of interest yields a required sample size that is larger than the resources you have available. This is common, as there are almost always resource constraints, but it requires a careful evaluation of the informational value of the study."),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+
+    observeEvent(input$model_effects_of_interest, {
+    showModal(modalDialog(
+      title = "How Effect Sizes are Related to Inferential Goals",
+      HTML("The evaluation of which effect sizes are interesting rely on a combination of statistical properties, domain knowledge, and your inferential goals."),
+      HTML("<br><br>If your inferential goal is a <b>statistical hypothesis test</b>, and you plan to perform an <b>a-priori power analysis</b>, best practice is to design a study well-powered for a <b>smallest effect size of interest</b>. 
+           Alternatively, design a study that is well powered for an <b>expected effect size</b> (either based on related studies in the literature, or other sources of expectations)."),
+      HTML("<br><br>If your inferential goal is an <b>accurate estimate</b>, provide an answer to the <b>expected effect size</b> (either based on a meta-analysis, related studies in the literature, or other sources of expectations)."),
+      HTML("<br><br>If your sample size justification is based on <b>resource constraints</b>, compute the <b>minimal statistically detectable effect</b> given the sample size you can collect. You can also specify the smallest effect size of interest, or an expected effect size, and examine the power for these effects in a sensitivity power analysis. If this is not possible, a last resort is to consider the <b>distribution of effects in a specific literature</b>, to evaluate the likelihood that the data will provide information about the presence of absence of effects of the size one typically encounters in a specific literature."),
+      HTML("<br><br>If your sample size justification is based on <b>heuristics</b>, or if there is <b>no justification</b>, compute the <b>minimal statistically detectable effect</b> given the sample size you will collect, and examine the power for a range of effect sizes that peers might find interesting in a sensitivity power analysis. Finally, it might be worthwhile to consider the <b>distribution of effects in a specific literature</b> to evalaute the likelihood that the data will provide information about the presence of absence of effects of the size one typically encounters in a specific literature."),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+  
+  
+  observeEvent(input$model_sesoi, {
+    showModal(modalDialog(
+      title = "Smallest Effect Size of Interest",
+      "The strongest possible sample size justification", a("here", href ="https://shiny.ieis.tue.nl/examples/meta_examples.html", target="_blank")," is based on an explicit statement of the smallest effect size that is considered interesting. A smallest effect size of interest can be based on theoretical predictions or practical considerations. For a review of approaches that can be used to determine a smallest effect size of interest in randomized controlled trials, see Cook et al. (2014)  and Keefe et al. (2013), for reviews of different methods to determine a smallest effect size of interest, see King (2011) and Copay, Subach, Glassman, Polly, and Schuler (2007), and for a discussion focused on psychological research, see Lakens et al. (2018). It can be challenging to determine the smallest effect size of interest whenever theories are not very developed, or when the research question is far removed from practical applications, but it is still worth thinking about which effects would be too small to matter. A first step forward is to discuss which effect sizes are considered meaningful in a specific research line with your peers. Researchers will differ in the effect sizes they consider large enough to be worthwhile (Murphy et al., 2014). Just as not every scientist will find every research question interesting enough to study, not every scientist will consider the same effect sizes interesting enough to study, and different stakeholders will differ in which effect sizes are considered meaningful (Kelley & Preacher, 2012). As original authors typically do not specify which effect size would falsify their hypothesis, the heuristic underlying this 'small telescopes' approach is a good starting point for a replication study with the inferential goal to reject the presence of an effect as large as was described in an earlier publication.",
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+  
+  observeEvent(input$modal_describe_population, {
+    showModal(modalDialog(
+      title = "Describe the population and its size",
+      "Include the estimated size of the population when the population is finite.", 
+      HTML("<br><br>"),
+      "From the ", a("Preregistration Standards for Psychology - the Psychological Research Preregistration-Quantitative Template ", href ="https://doi.org/10.23668/psycharchives.4584", target="_blank"),":",
+      HTML("<br><br><ul><li>Indicate (a) methods of recruitment (e.g., subject pool advertisement, community events, crowdsourcing platforms, snowball sampling); (b) selection and inclusion/exclusion criteria (e.g., age, visual acuity, language facility); (c) details of any stratification sampling used; (d) planned participant characteristics (gender, race/ethnicity, sexual orientation and gender identity, SES, education level, age, disability or health status, geographic location); (e) compensation amount and method (e.g., same payment to all, pay based on performance, lottery).</ul></li>"),
+      HTML("<br><br>"),
+      "From the ", a("JARS Quantitative Design Reporting Standards", href ="https://apastyle.apa.org/jars/quant-table-1.pdf", target="_blank"),":",
+      HTML("<br><br><ul><li>Report major demographic characteristics (e.g., age, sex, ethnicity, socioeconomic status) and important topic-specific characteristics (e.g., achievement level in studies of educational interventions).</ul></li>"),
+      HTML("<ul><li>In the case of animal research, report the genus, species, and strain number or other specific identification, such as the name and location of the supplier and the stock designation. Give the number of animals and the animals' sex, age, weight, physiological condition, genetic modification status, genotype, health-immune status, drug or test naivete, and previous procedures to which the animal may have been subjected.</ul></li>"),
+      HTML("<ul><li>Report inclusion and exclusion criteria, including any restrictions based on demographic characteristics.</ul></li>"),
+      HTML("<br><br>"),
+      "From the ", a("JARS Qualitative Design Reporting Standards", href ="https://apastyle.apa.org/jars/qual-table-1.pdf", target="_blank"),":",
+      HTML("<br><br><ul><li>Provide the numbers of participants/documents/events analyzed</ul></li>"),
+      HTML("<ul><li>Describe the demographics/cultural information, perspectives of participants, or caracteristics of data sources that might influence the data collected.</ul></li>"),
+      HTML("<ul><li>Describe existing data sources, if relevant (e.g., newspapers, internet, archive).</ul></li>"),
+      HTML("<ul><li>Provide data repository information for openly shared data, if applicable.</ul></li>"),
+      HTML("<ul><li>Describe archival searches or process of locating data for analyses, if applicable.</ul></li>"),
+      HTML("<br><br>"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+
+  observeEvent(input$modal_meta, {
+    showModal(modalDialog(
+      title = "Collecting Data for a Future Meta-Analysis",
+      HTML("Another way in which a small dataset can be valuable is if its existence eventually makes it possible to perform a meta-analysis (Maxwell & Kelley, 2011). This argument in favor of collecting a small dataset requires 1) that researchers share the data in a way that a future meta-analyst can find it, and 2) that there is a decent probability that someone will performa high-quality meta-analysis that will include this data in the future (Halpern, Karlawish, & Berlin, 2002). The uncertainty about whether there will ever be such a meta-analysis should be weighed against the costs of data collection."),
+      HTML("<br><br>One way to increase the probability of a future metaanalysis is if researchers commit to performing this meta-analysis themselves, by combining several studies they have performed into a small-scale meta analysis (Cumming, 2014). For example, a researcher might plan to repeat a study for the next 12 years in a class they teach, with the expectation that after 12 years a meta-analysis of 12 studies would be sufficient to draw informative inferences (but see ter Schure and Grunwald (2019)). If it is not plausible that a researcher will collect all the required data by themselves, they can attempt to set up a collaboration where fellow researchers in their field commit to collecting similar data with identical measures. If it is not likely that sufficient data will emerge over time to reach the inferential goals, there might be no value in collecting the data."),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+
+  observeEvent(input$modal_effect_of_interest_meta, {
+    showModal(modalDialog(
+      title = "Using an Estimate from a Meta-Analysis",
+      HTML("In a perfect world effect size estimates from a meta-analysis would provide researchers with the most accurate information about which effect size they could expect. Due to widespread publication bias in science, effect size estimates from meta-analyses are regrettably not always accurate. They can be biased, sometimes substantially so. Furthermore, meta-analyses typically have considerable heterogeneity, which means that the meta-analytic effect size estimate differs for subsets of studies that make up the meta-analysis. So, although it might seem useful to use a meta-analytic effect size estimate of the effect you are studying in your power analysis, you need to take great care before doing so."),
+      HTML("<br><br>If a researcher wants to enter a meta-analytic effect size estimate in an a-priori power analysis, they need to consider three things. First, the studies included in the meta-analysis should be similar enough to the study they are performing that it is reasonable to expect a similar effect size. In essence, this requires evaluating the generalizability of the effect size estimate to the new study. It is important to carefully consider differences between the meta-analyzed studies and the planned study, with respect to the manipulation, the measure, the population, and any other relevant variables."),
+      HTML("<br><br>Second, researchers should check whether the effect sizes reported in the meta-analysis are homogeneous. If not, and there is considerable heterogeneity in the meta-analysis, it means not all included studies can be expected to have the same true effect size estimate. A meta-analytic estimate should be used based on the subset of studies that most closely represent the planned study. Note that heterogeneity remains a possibility (even direct replication studies can show heterogeneity when unmeasured variables moderate the effect size in each sample), so the main goal of selecting similar studies is to use existing data to increase the probability that your expectation is accurate, without guaranteeing it will be."),
+      HTML("<br><br>Third, the meta-analytic effect size estimate should not be biased. Check if the bias detection tests that are reported in the meta-analysis are state-of-the-art, or perform multiple bias detection tests yourself, and consider bias corrected effect size estimates (even though these estimates might still be biased, and do not necessarily reflect the true population effect size)."),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+  
+  observeEvent(input$modal_effect_of_interest_previous, {
+    showModal(modalDialog(
+      title = "Using an Estimate from a Previous Study",
+      HTML("An effect size from a previous study in an a-priori power analysis can be used if three conditions are met."),
+      HTML("<br><br>First, the previous study is sufficiently similar to the planned study."),
+      HTML("<br><br>Second, there was a low risk of bias (e.g., the effect size estimate comes from a Registered Report, or from an analysis for which results would not have impacted the likelihood of publication)."),
+      HTML("<br><br>Third, the sample size in the previous study is large enough to yield relatively accurate effect size estimate, based on the width of a 95% CI around the observed effect size estimate."),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
   
   observeEvent(input$jump_to_a, {
     updateTabItems(session, "tabs", "part_a")
@@ -413,6 +545,10 @@ server <- function(input, output, session) {
   observeEvent(input$observations, {values$observations <- input$observations})
   observeEvent(input$participants_details, {values$participants_details <- input$participants_details})
   observeEvent(input$informational_value, {values$informational_value <- input$informational_value})
+  observeEvent(input$heuristic, {values$heuristic <- input$heuristic})
+  observeEvent(input$heuristic_details, {values$heuristic_details <- input$heuristic_details})
+  observeEvent(input$justification, {values$justification <- input$justification})
+  observeEvent(input$no_justification_details, {values$no_justification_details <- input$no_justification_details})
   
   observeEvent(input$collect_entire_population, {
     if (input$collect_entire_population == "no") {
@@ -486,6 +622,22 @@ server <- function(input, output, session) {
     }
   })
   
+  observeEvent(input$heuristic, {
+    if (input$heuristic == "yes") {
+      show("heuristic_sub_q")
+    } else {
+      hide("heuristic_sub_q")
+    }
+  })
+  
+  observeEvent(input$justification, {
+    if (input$justification == "yes") {
+      show("no_justification_sub_q")
+    } else {
+      hide("no_justification_sub_q")
+    }
+  })
+  
   final_summary_text_1 <- reactive(input$describe_constraints)
   final_summary_text_2 <- reactive(if(is.na(input$sesoi_effect_value) == FALSE){paste0("A smallest effect size of interest size of ", input$sesoi_effect_metric, " = ", input$sesoi_effect_value,".")})
     final_summary_text_3 <- reactive(if(is.na(input$statistically_detectable_effect_value) == FALSE){paste0("A minimal statistically detectable effect of ", input$statistically_detectable_effect_metric, " = ", input$statistically_detectable_effect_value, ".")})
@@ -515,9 +667,13 @@ server <- function(input, output, session) {
     } else if (
       input$decision == "yes") {
       inferential_goal_final_summary <- paste0("The inferentional goal is to make a decision based on the judgment that a Type I error is ", input$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", input$alpha_level, ", and the desired power is ", input$power)
+    } else if (
+      params$heuristic == "yes") {
+      inferential_goal_final_summary <- paste0("was not specified, but a heuristic was used instead")
+    } else if (
+      params$justification == "yes") {
+      inferential_goal_final_summary <- paste0("was not specified, and no justification for the sample size was provided")
     })
-    
-    
     
     output$final_summary_text_1 <- renderText(final_summary_text_1())
     output$final_summary_text_2 <- renderText(final_summary_text_2())
@@ -580,6 +736,10 @@ server <- function(input, output, session) {
                      power_goal = values$power_goal,
                      power_type = as.character(values$power_type),
                      power_analysis_code = values$power_analysis_code,
+                     heuristic = values$heuristic,
+                     heuristic_details = values$heuristic_details,
+                     justification = values$justification,
+                     no_justification_details = values$no_justification_details,
                      observations = values$observations,
                      participants = values$participants,
                      participants_details = values$participants_details,

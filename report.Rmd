@@ -46,6 +46,10 @@ params:
   power_goal: NA,
   power_type: NA,
   power_analysis_code: NA,
+  heuristic: NA,
+  heuristic_details: NA,
+  justification: NA,
+  no_justification_details: NA,
   observations: NA,
   participants: NA,
   participants_details: NA,
@@ -257,6 +261,14 @@ if(code_summary_decision != ""){
 }
 ```
 
+`r if(params$heuristic == "yes"){paste("The sample size was not determine in relation to a specific inferentical goal, but based on heuristics, about which the following information has been provided:")}`
+
+```{r echo = FALSE, comment = NA}
+if(params$heuristic == "yes" && params$heuristic_details != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$heuristics_details))}
+```
+
+`r if(params$heuristic == "yes" && params$heuristic_details == ""){paste("*No further details or justifications for chosen values were provided*")}`
+
 # D: Informational Value of the Study
 
 Based on the resource constraints, the effects of interest, and the inferential goals, the following evaluation of the informational value of the study has been provided:
@@ -288,21 +300,31 @@ if(params$power_goal == "yes") {
     inferential_goal_final_summary <- paste0("based on a ", params$power_type, " with an alpha level of ", params$alpha_level, power_desired)
     } else if (
       params$estimate == "yes") {
-      inferential_goal_final_summary <- paste0("to estimate parameters with a desired accuracy ", params$desired_accuracy, " ", params$estimate_metric, assurance, ".")
+      inferential_goal_final_summary <- paste0("to estimate parameters with a desired accuracy ", params$desired_accuracy, " ", params$estimate_metric, assurance)
     } else if (
       params$decision == "yes") {
       inferential_goal_final_summary <- paste0("to make a decision based on the judgment that a Type I error is ", params$relative_cost, " times as costly as a Type II error, the chosen alpha level is ", params$alpha_level, ", and the desired power is ", params$power)
+    } else if (
+      params$heuristic == "yes") {
+      inferential_goal_final_summary <- paste0("was not specified, but a heuristic was used instead")
+    } else if (
+      params$justification == "yes") {
+      inferential_goal_final_summary <- paste0("was not specified, and no justification for the sample size was provided")
     }
 
 ```
 
 and given the inferential goal `r paste(inferential_goal_final_summary)`,
 
-the sample size in the planned study consists a total of `r params$participants` participants, each contributing `r params$observations` observations. The following additional details about the sample size were provided: 
+the sample size in the planned study consists a total of `r params$participants` participants, each contributing `r params$observations` observations. 
+
+The following additional details about the sample size were provided: 
 
 ```{r echo = FALSE, comment = NA}
-cat(gsub(pattern = "\n", replacement = "  \n", x = params$participants_details))
+if(params$participants_details != ""){cat(gsub(pattern = "\n", replacement = "  \n", x = params$participants_details))}
 ```
+
+`r if(params$participants_details == ""){paste("*No further details about the sample size were provided*")}`
 
 An explanation of the informational value of the sample size that will be collected, given any resource constraints, the effects of interest, and the inferential goal, is provided below:
 

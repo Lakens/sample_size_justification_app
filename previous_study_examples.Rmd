@@ -21,3 +21,11 @@ Data  from  Jones  and  Forster  (2014)  provide  an  estimate  of  what  we  sh
 
 By following these steps, we estimated a Cohen’s D (for  the  difference  score  best  representing  the anticipated 2x2x2 interaction) of 0.376. 
 This yields N = 77 to achieve 90% power with alpha set to 0.05. Participants who do not meet the selection criteria or whose data is lost or damaged due to unforeseeable circumstances will not contribute to this sample size. 
+
+
+## From https://journals.sagepub.com/doi/10.1177/10731911211061280
+
+*the text below comes from the corresponding OSF page*
+
+We used the software R and the package lavaan to conduct a power analysis using a Monte-Carlo simulation. We decided to base the power analysis on Hypothesis 4 because it has the highest requirements regarding sample size to achieve sufficient power. The population model was based on estimated model parameters from a previous data analysis in a German sample (N = 505) that was representative in terms of age and gender. The power for rejecting the H0 with regard to Hypothesis 4 for the 20-item version CAMSQ was estimated at 87% for N = 400. Given budget constraints, we did not aim for a larger sample."
+
