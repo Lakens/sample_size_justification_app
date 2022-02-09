@@ -25,6 +25,17 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
+    useShinyjs(),
+    
+    tags$style(HTML("
+      .box-header {
+        padding: 0 10px 0 0;
+      }
+      .box-header h3 {
+        width: 100%;
+        padding: 10px;
+      }")),
+    
     fluidRow(
       column(width = 12,
     shinyjs::useShinyjs(),
@@ -179,7 +190,7 @@ ui <- dashboardPage(
         # Width of the Confidence Interval
         box(
           collapsible = TRUE, collapsed = TRUE, title = "Width of the Confidence Interval", solidHeader = TRUE, status = "primary", width = 12,
-          h4("If a researcher can estimate the standard deviation of the observations that will be collected, it is possible to compute an a-priori estimate of the width of the 95% confidence interval around an effect size. What is the informational value of estimating effects with this accuracy? Which effect sizes can be expected to be rejected, and why is it interesting for peers?"), actionButton("modal_width_confidence_interval", "?"),
+          h4("If a researcher can estimate the standard deviation of the observations that will be collected, it is possible to compute an a-priori estimate of the width of the confidence interval around an effect size. What is the informational value of estimating effects with this accuracy? Which effect sizes can be expected to be rejected, and why is it interesting for peers?"), actionButton("modal_width_confidence_interval", "?"),
           textAreaInput("width_effect_estimate", rows = 5, "")
         ),
         # Effect sizes high sensitivity
@@ -274,8 +285,8 @@ Output:	Noncentrality parameter δ	=	3.0740852
             numericInput("desired_accuracy", "What is the desired level of accuracy of the interval specified above?", value = 0.95, min = 0, max = 1, step = 0.01),
             numericInput("assurance", "[Optional] What is the specified degree of assurance that the obtained confidence interval will be sufficiently narrow?", value = NULL, min = 0, max = 1, step = 0.001),
             textAreaInput("estimation_code", NULL,
-                          rows = 5, label = "Sample Size Computation",
-                          placeholder = "Computation of the sample size to reach a desired accuracy (preferably in code)?"
+                          rows = 5, label = "Provide a justification for the chosen level of the interval (e.g., 95%) and the desired width of the confidence interval. Include details about the calculation of the required sample size based on these desired values. ",
+                          placeholder = "Justification of chosen values and computation of the sample size to reach a desired accuracy (preferably in code)."
             ))
         )),
         # power section
@@ -407,6 +418,13 @@ Output:	Noncentrality parameter δ	=	3.8710464
 )
 
 server <- function(input, output, session) {
+  
+  runjs("
+      $('.box').on('click', '.box-header h3', function() {
+          $(this).closest('.box')
+                 .find('[data-widget=collapse]')
+                 .click();
+      });")
   
   observeEvent(input$model_entire_population, {
     showModal(modalDialog(
