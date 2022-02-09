@@ -1,0 +1,14 @@
+---
+title: "Examples of resource constraint justifications"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## From https://rr.peercommunityin.org/articles/rec?id=144
+
+This sample size justification combines resource limitations and a smallest effect size of interest. 
+
+Our planned sample size is informed by the effect sizes obtained from Kelly et al. (2021) and Rundle et al. (2021). For our main effects of interest (see “Vignette development” below), Kelly et al. observed a significant effect of Cohen’s ds ~ .15 for perceived danger, ds ~ .20 for prognostic optimism, ds ~ .30 for continuing care and ds ~ .43 for blame, whilst Rundle et al. observed an effect of ds ~ .1.03 for Stigma Ratings . We conducted a series of sensitivity power analyses based on the two one-sided tests procedure for equivalence testing (see Dienes, 2021; Lakens, 2017). In the first, we input the smallest significant effect of −ΔL = -.15 and ΔU = .15 from Kelly et al., which requires 2,804 participants to achieve 90% statistical power with alpha set at .01. However, this is outside of our funding resources (see Lakens et al., 2021). For this reason, we then input the second smallest effect of −ΔL = -.20 and ΔU = .20, again from Kelly et al., which requires 1,578 participants (n  = 789 per factor): given that this is within our resources, this determined our planned sample size. Note that effect sizes of  ds =/> .20 have also been found in meta-analyses assessing the influence of the brain disease model on public stigma (Kvaale et al., 2013) meaning that the planned sample size would yield informative results with respect to the presence or absence of effect size estimates provided by this meta-analysis. 
