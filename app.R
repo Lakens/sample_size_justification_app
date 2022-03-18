@@ -57,7 +57,7 @@ ui <- dashboardPage(
           <ul><li> not draw any inferences, and collect the data so they can be included in a <b>future meta-analysis</b>.</ul></li> 
           <ul><li> justify the sample size because a <b>decision</b> needs to be made, even if data is scarce, and design a study based on a <b> compromise power analysis</b> that allows you to sufficiently reduce the relative probability of Type 1 and Type II error rates based on a cost-benefit analysis</ul></li>
           <ul><li> If you still want to perform a hypothesis test, perform a <b>sensitivity power analysis</b>, justify the sample size based on the information it will provide about the <b>expected effect size</b> or other effect sizes of interest, such as effects previously observed in the literature. 
-          If you plan to perform a hypothesis test, examine if the <b>minimal statistically detectable effect</b> is large enough to warrant a hypothesis test, and evaluate whether the Type 1 error rate and the Type II error rate make it possible to draw useful conclusions based on the <i>p</i>-value, or not.</ul></li>
+          If you plan to perform a hypothesis test, examine if the <b>minimal statistically detectable effect</b> is small enough to warrant a hypothesis test, and evaluate whether the Type 1 error rate and the Type II error rate make it possible to draw useful conclusions based on the <i>p</i>-value, or not.</ul></li>
           <ul><li>If you want to estimate an effect size, interpret the <b>width of the confidence interval around the estimate</b>, and specify what an estimate with this accuracy is useful for.</ul></li>
           </ul></li></h4>")),
            actionButton('jump_to_a', 'Continue to the Sample Description Tab'),
@@ -303,7 +303,7 @@ Output:	Noncentrality parameter δ	=	3.0740852
           id = "power_sub_q",
           box(
             collapsible = FALSE, title = "Power calculation.", solidHeader = TRUE, status = "primary", width = 12, 
-            h4("Specify the parameters related to the statistical power calculation. If you have multiple hypothesis tests in your study"),
+            h4("Specify the parameters related to the statistical power calculation. If you have multiple hypothesis tests in your study, enter the power analysis that determines your final sample size. Typically, this is the power analysis that returns the largest number of observations."),
             selectInput(
               "power_type", "What type of power analysis have you performed?",
               c("a-priori power analysis", "sensitivity power analysis", "compromise power analysis")
